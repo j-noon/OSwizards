@@ -1,0 +1,244 @@
+/* ---------- Base reset ---------- */
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* Layout container (kept from your setup) */
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+/* ---------- Theme vibes ---------- */
+:root{
+  --ink: #1c120b;
+  --parchment: #f2e2c6;
+  --parchment-edge: #d2b48c;
+  --shadow: rgba(0,0,0,.18);
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  border-bottom: 1px solid rgba(0,0,0,.10);
+  padding: 14px 0 10px;
+}
+
+.header-inner {
+  display: grid;
+  gap: 10px;
+  justify-items: center; /* centers everything on mobile */
+}
+
+/* Big bold centered title at top */
+.brand {
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  font-size: 34px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Toggle button */
+.nav-toggle {
+  appearance: none;
+  border: 1px solid rgba(0,0,0,.18);
+  background: linear-gradient(180deg, #fff7e6, #f0ddbd);
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px var(--shadow);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.nav-toggle:active {
+  transform: translateY(1px);
+}
+
+/* ---------- Scroll dropdown (nav) ---------- */
+.nav-scroll {
+  width: 100%;
+  max-width: 520px;
+
+  /* parchment scroll look */
+  background: radial-gradient(circle at 30% 20%, #fff7e6, var(--parchment));
+  border: 1px solid rgba(0,0,0,.18);
+  border-radius: 18px;
+  box-shadow: 0 14px 28px var(--shadow);
+
+  padding: 14px 14px 16px;
+  position: relative;
+
+  /* animation baseline */
+  transform-origin: top center;
+  transform: scaleY(0.88);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease, opacity 220ms ease, transform 220ms ease;
+}
+
+/* Scroll “rollers” */
+.nav-scroll::before,
+.nav-scroll::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--parchment-edge), #f5e7cf, var(--parchment-edge));
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+
+.nav-scroll::before { top: -6px; }
+.nav-scroll::after  { bottom: -6px; }
+
+/* open state toggled by JS */
+.nav-scroll.is-open {
+  max-height: 360px;
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Vertical “ink quill” links */
+.scroll-link {
+  display: block;
+  padding: 12px 12px;
+  margin: 6px 0;
+  border-radius: 14px;
+  text-decoration: none;
+
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-size: 18px;
+
+  background: rgba(255,255,255,.35);
+  border: 1px dashed rgba(0,0,0,.18);
+  position: relative;
+}
+
+/* Spell fire hover */
+.scroll-link:hover {
+  animation: spellIgnite 650ms ease-in-out infinite alternate;
+  border-color: rgba(0,0,0,.3);
+}
+
+/* Glowing embers */
+.scroll-link:hover::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  pointer-events: none;
+  opacity: 0.9;
+  filter: blur(8px);
+  background: radial-gradient(circle at 20% 50%,
+    rgba(255,170,0,.55),
+    rgba(255,60,0,.35),
+    rgba(140,0,0,.18),
+    transparent 70%);
+  animation: emberFlicker 420ms ease-in-out infinite alternate;
+}
+
+/* --- Fire video overlay inside nav links --- */
+.scroll-link {
+  overflow: hidden; /* keep fire contained inside the link */
+}
+
+.link-text {
+  position: relative;
+  z-index: 2; /* keep text above the fire */
+}
+
+/* the video should NOT take up layout space */
+.fire {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -40%;
+  width: 120%;
+  height: 180%;
+  z-index: 1;
+
+  opacity: 0;              /* hidden until hover */
+  pointer-events: none;    /* don't block clicking */
+  object-fit: cover;
+
+  /* optional: makes it glow/feel magical */
+  filter: blur(0.2px) brightness(1.1) contrast(1.05);
+  transition: opacity 160ms ease;
+}
+
+/* show video on hover + keyboard focus */
+.scroll-link:hover .fire,
+.scroll-link:focus-visible .fire {
+  opacity: 1;
+}
+
+@keyframes spellIgnite {
+  0%   { text-shadow: 0 0 0 rgba(0,0,0,0); transform: translateY(0); }
+  40%  { text-shadow: 0 0 10px rgba(255,120,0,.35), 0 0 18px rgba(255,40,0,.25); }
+  100% { text-shadow: 0 0 14px rgba(255,160,0,.45), 0 0 28px rgba(255,40,0,.3); transform: translateY(-1px); }
+}
+
+@keyframes emberFlicker {
+  0%   { opacity: 0.55; transform: scale(0.98); }
+  100% { opacity: 0.95; transform: scale(1.02); }
+}
+
+/* ---------- Main ---------- */
+.site-main {
+  padding: 20px 0 30px;
+  min-height: calc(100vh - 160px);
+}
+
+/* ---------- Footer (kept, lightly themed) ---------- */
+.site-footer {
+  border-top: 1px solid rgba(0,0,0,.10);
+  padding: 16px 0;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer-text {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.social {
+  display: flex;
+  gap: 12px;
+}
+
+.social-link {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.social-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Larger screens (starter only) ---------- */
+@media (min-width: 860px) {
+  .brand { font-size: 42px; }
+  .nav-scroll { max-width: 420px; }
+}

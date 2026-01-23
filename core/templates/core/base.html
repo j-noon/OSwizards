@@ -1,0 +1,72 @@
+{% load static %}
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}OS Wizards{% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'core/css/base.css' %}">
+  <script defer src="{% static 'core/js/nav.js' %}"></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <!-- Big centered title -->
+      <a class="brand" href="{% url 'core:home' %}">OS Wizards</a>
+
+      <!-- Toggle button -->
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Open Grimoire ▾
+      </button>
+
+      <!-- Scroll dropdown nav -->
+    <nav id="site-nav" class="nav-scroll" hidden>
+
+      <a class="scroll-link" href="{% url 'core:home' %}">
+        <span class="link-text">Home</span>
+        <video class="fire" muted loop playsinline preload="none">
+          <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
+        </video>
+      </a>
+
+      <a class="scroll-link" href="{% url 'merchandise:merch' %}">
+        <span class="link-text">Merch</span>
+        <video class="fire" muted loop playsinline preload="none">
+          <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
+        </video>
+      </a>
+
+      <a class="scroll-link" href="{% url 'games:games' %}">
+        <span class="link-text">Games</span>
+        <video class="fire" muted loop playsinline preload="none">
+          <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
+        </video>
+      </a>
+
+    </nav>
+
+    </div>
+  </header>
+
+  <main class="site-main">
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-text">© {% now "Y" %} OS Wizards</p>
+
+      <div class="social">
+        <a class="social-link" href="https://twitter.com/" target="_blank" rel="noopener">Twitter</a>
+        <a class="social-link" href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+        <a class="social-link" href="https://youtube.com/" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
