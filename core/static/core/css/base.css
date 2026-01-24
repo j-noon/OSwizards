@@ -12,6 +12,10 @@ body {
   background-color: rgba(112, 62, 5, 0.658);
 }
 
+.brand {
+  font-family: Cinzel, serif;
+}
+
 /* =========================================================
    LAYOUT WRAPPER
    ========================================================= */
@@ -90,8 +94,8 @@ body {
 
 .profile-btn {
   appearance: none;
-  border: 1px solid rgba(0,0,0,.2);
-  background: linear-gradient(180deg, #fff7e6, #e9d1a8);
+  border: 1px solid rgb(77, 228, 18);
+  background: linear-gradient(180deg, #f3f7f4, #e5ece6);
   padding: 3px 6px;
   border-radius: 12px;
   font-weight: 700;
@@ -117,16 +121,16 @@ body {
 
   /* outer arcane aura */
   box-shadow:
-    0 8px 18px rgba(0,0,0,.25),
-    0 0 16px rgba(170, 90, 255, 0.85),
-    0 0 34px rgba(120, 60, 220, 0.75),
-    0 0 54px rgba(90, 30, 200, 0.50);
+    0 8px 18px rgba(9, 230, 64, 0.25),
+    0 0 16px rgba(3, 243, 75, 0.85),
+    0 0 34px rgba(2, 179, 31, 0.75),
+    0 0 54px rgba(4, 238, 35, 0.5);
 
   /* inner purple hum */
   background: linear-gradient(
     180deg,
-    rgba(255,255,255,0.92),
-    rgba(210, 175, 255, 0.98)
+    rgba(10, 228, 28, 0.92),
+    rgba(8, 231, 56, 0.98)
   );
 
   filter:
@@ -142,17 +146,17 @@ body {
 @keyframes arcaneHum {
   0%, 100% {
     box-shadow:
-      0 8px 18px rgba(0,0,0,.25),
-      0 0 14px rgba(170, 90, 255, 0.65),
-      0 0 30px rgba(120, 60, 220, 0.55),
-      0 0 46px rgba(90, 30, 200, 0.35);
+      0 8px 18px rgba(0, 0, 0, 0.25),
+      0 0 14px rgba(5, 226, 71, 0.65),
+      0 0 30px rgba(5, 231, 62, 0.55),
+      0 0 46px rgba(13, 238, 81, 0.35);
   }
   50% {
     box-shadow:
       0 8px 18px rgba(0,0,0,.25),
-      0 0 22px rgba(190, 120, 255, 0.92),
-      0 0 44px rgba(140, 80, 240, 0.85),
-      0 0 68px rgba(110, 50, 230, 0.60);
+      0 0 22px rgba(3, 231, 71, 0.92),
+      0 0 44px rgba(6, 243, 46, 0.85),
+      0 0 68px rgba(23, 197, 7, 0.6);
   }
 }
 
@@ -222,7 +226,7 @@ body {
    ========================================================= */
 .nav-scroll {
   position: absolute;
-  top: calc(100% - 25px);
+  top: calc(100% - 75px);
   left: 15px; 
   z-index: 60;
   width: max-content;
@@ -329,43 +333,146 @@ body {
    ========================================================= */
 .site-main {
   padding: 20px 0 30px;
-  min-height: calc(100vh - 160px);
 }
 
 /* =========================================================
-   FOOTER
+   FOOTER (fixed, always visible, arcane vibe)
    ========================================================= */
+
 .site-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+
   border-top: 1px solid rgba(0,0,0,.10);
-  padding: 16px 0;
   background-color: rgba(240, 132, 9, 0.45);
+  backdrop-filter: blur(6px);
+}
+
+/* keep footer content aligned with your page width */
+.site-footer .container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
 }
 
 .footer-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 8px;          /* 2px is too cramped */
+  padding: 6px 0;    /* 2px is too thin visually */
 }
 
 .footer-text {
   margin: 0;
   color: var(--ink);
-  font-weight: 700;
-}
-
-.social {
-  display: flex;
-  gap: 12px;
-}
-
-.social-link {
-  color: var(--ink);
-  text-decoration: none;
   font-weight: 800;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
-.social-link:hover { text-decoration: underline; }
+/* right side links */
+.footer-social {
+  display: flex;
+  flex-direction: column;        /* 👈 stack */
+  align-items: flex-end;         /* 👈 right aligned */
+  gap: 2px;
+}
+
+/* link is the positioning box */
+.footer-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  padding: 1px 0;          /* was 6px 0 */
+  line-height: 1.1;        /* tighter vertical rhythm */
+  white-space: nowrap;
+  width: fit-content;
+}
+
+/* text always on top and readable */
+.fire-spell-text {
+  position: relative;
+  z-index: 2;
+  padding: 0 1px;
+  text-shadow: 0 0 2px rgba(0,0,0,0.25);
+  transition: text-shadow 160ms ease, filter 160ms ease;
+}
+
+/* hover glow on the text */
+.footer-link:hover .fire-spell-text,
+.footer-link:focus-visible .fire-spell-text {
+  text-shadow:
+    0 0 10px rgba(255, 150, 60, 0.75),
+    0 0 18px rgba(255, 80, 0, 0.55);
+  filter: drop-shadow(0 0 8px rgba(255, 120, 30, 0.35));
+  outline: none;
+}
+
+/* fire sits behind, constrained to this link width */
+.fire-spell {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 180px;
+  height: 64px;
+  transform:
+    translateX(-50%)
+    scaleX(0.55);
+  transform-origin: center bottom;
+  opacity: 0;
+  pointer-events: none;
+  object-fit: cover;
+  background: transparent;
+  z-index: 1;
+  mix-blend-mode: screen;
+  filter:
+    brightness(1.05)
+    contrast(1.15)
+    saturate(1.05)
+    blur(0.6px);
+  /* ultra-soft feather so no rectangle can appear */
+  -webkit-mask-image: radial-gradient(
+    ellipse 55% 75% at 50% 75%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 42%,
+    rgba(0,0,0,0) 78%,
+    rgba(0,0,0,0) 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 55% 75% at 50% 75%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 42%,
+    rgba(0,0,0,0) 78%,
+    rgba(0,0,0,0) 100%
+  );
+  transition: opacity 160ms ease;
+}
+
+/* show fire on hover/focus */
+.footer-link:hover .fire-spell,
+.footer-link:focus-visible .fire-spell {
+  opacity: 1;
+}
+
+.footer-link .fire-spell-text{
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================================================
+   Make room so page content doesn't sit under fixed footer
+   ========================================================= */
+.site-main {
+  padding-bottom: 90px;
+}
 
 
 /* =========================================================
@@ -399,7 +506,13 @@ body {
     --x: 10px;
     --y: -70px; /* tweak: -16 to -28 */
   }
+    .footer-social {
+    flex-direction: row;         /* 👈 inline again */
+    align-items: center;
+    gap: 14px;
+  }
 }
+
 
 /* =========================================================
    ULTRAWIDE (>= 1440px)

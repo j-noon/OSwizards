@@ -4,8 +4,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>{% block title %}OS Wizards{% endblock %}</title>
 
+  <!-- SEO meta -->
+  <meta name="description" content="OS Wizards is a fantasy-themed web application inspired by tabletop roleplaying, dungeons, and dragons.">
+  <meta name="keywords" content="dnd, dungeons, dragons, table top, role play">
+  <meta name="author" content="Jodesius, student developer">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'core/media/favicon-16x16.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/media/favicon-32x32.png' %}">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS + JS -->
   <link rel="stylesheet" href="{% static 'core/css/base.css' %}">
   <script defer src="{% static 'core/js/nav.js' %}"></script>
 </head>
@@ -23,6 +39,13 @@
      style="--scroll-bg: url('{% static 'core/media/open-scroll.webp' %}');">
       <a class="scroll-link" data-label="Home" href="{% url 'core:home' %}">
         <span class="link-text">Home</span>
+        <video class="lightning" muted loop playsinline preload="none">
+          <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
+        </video>
+      </a>
+
+      <a class="scroll-link" data-label="login" href="{% url 'core:home' %}">
+        <span class="link-text">Login/Register</span>
         <video class="lightning" muted loop playsinline preload="none">
           <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
         </video>
@@ -77,11 +100,28 @@
     <div class="container footer-inner">
       <p class="footer-text">© {% now "Y" %} OS Wizards</p>
 
-      <div class="social">
-        <a class="social-link" href="https://twitter.com/" target="_blank" rel="noopener">Twitter</a>
-        <a class="social-link" href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
-        <a class="social-link" href="https://youtube.com/" target="_blank" rel="noopener">YouTube</a>
-      </div>
+      <nav class="footer-social" aria-label="Social links">
+        <a class="footer-link fire-spell-link" href="https://discord.gg/KudpPU2U" target="_blank" rel="noopener">
+          <span class="fire-spell-text">Discord</span>
+          <video class="fire-spell" muted loop playsinline preload="none">
+            <source src="{% static 'core/media/fire-overlay.webm' %}" type="video/webm">
+          </video>
+        </a>
+
+        <a class="footer-link fire-spell-link" href="https://www.twitch.tv/oswizards" target="_blank" rel="noopener">
+          <span class="fire-spell-text">Twitch</span>
+          <video class="fire-spell" muted loop playsinline preload="none">
+            <source src="{% static 'core/media/fire-overlay.webm' %}" type="video/webm">
+          </video>
+        </a>
+
+        <a class="footer-link fire-spell-link" href="https://www.youtube.com/channel/UCEsj7XDVX6rlRSbSExi33FQ" target="_blank" rel="noopener">
+          <span class="fire-spell-text">YouTube</span>
+          <video class="fire-spell" muted loop playsinline preload="none">
+            <source src="{% static 'core/media/fire-overlay.webm' %}" type="video/webm">
+          </video>
+        </a>
+      </nav>
     </div>
   </footer>
 </body>

@@ -80,4 +80,34 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mobile tap (best effort)
     link.addEventListener("touchstart", play, { passive: true });
   });
+
+    // ----- Footer fire spell: play on hover/focus, stop on leave/blur -----
+    const fireLinks = document.querySelectorAll(".fire-spell-link");
+
+    fireLinks.forEach((link) => {
+      const vid = link.querySelector("video.fire-spell");
+      if (!vid) return;
+
+      vid.muted = true;
+
+      const play = async () => {
+        try {
+          vid.currentTime = 0;
+          await vid.play();
+        } catch {}
+      };
+
+      const stop = () => {
+        vid.pause();
+        vid.currentTime = 0;
+      };
+
+      link.addEventListener("mouseenter", play);
+      link.addEventListener("mouseleave", stop);
+
+      link.addEventListener("focus", play);
+      link.addEventListener("blur", stop);
+
+      link.addEventListener("touchstart", play, { passive: true });
+    });
 });
