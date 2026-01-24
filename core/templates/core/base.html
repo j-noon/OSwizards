@@ -11,45 +11,61 @@
 </head>
 
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
+<header class="site-header">
 
-      <!-- Big centered title -->
-      <a class="brand" href="{% url 'core:home' %}">OS Wizards</a>
+  <!-- Top-left floating button + dropdown (NOT inside container) -->
+  <div class="nav-wrap">
+    <button class="nav-toggle scroll-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="scroll-btn__text"></span>
+    </button>
 
-      <!-- Toggle button -->
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        Open Grimoire ▾
-      </button>
-
-      <!-- Scroll dropdown nav -->
-    <nav id="site-nav" class="nav-scroll" hidden>
-
-      <a class="scroll-link" href="{% url 'core:home' %}">
+    <nav id="site-nav" class="nav-scroll" hidden
+     style="--scroll-bg: url('{% static 'core/media/open-scroll.webp' %}');">
+      <a class="scroll-link" data-label="Home" href="{% url 'core:home' %}">
         <span class="link-text">Home</span>
-        <video class="fire" muted loop playsinline preload="none">
+        <video class="lightning" muted loop playsinline preload="none">
           <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
         </video>
       </a>
 
-      <a class="scroll-link" href="{% url 'merchandise:merch' %}">
+      <a class="scroll-link" data-label="Merch" href="{% url 'merchandise:merch' %}">
         <span class="link-text">Merch</span>
-        <video class="fire" muted loop playsinline preload="none">
+        <video class="lightning" muted loop playsinline preload="none">
           <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
         </video>
       </a>
 
-      <a class="scroll-link" href="{% url 'games:games' %}">
+      <a class="scroll-link" data-label="Games" href="{% url 'games:games' %}">
         <span class="link-text">Games</span>
-        <video class="fire" muted loop playsinline preload="none">
+        <video class="lightning" muted loop playsinline preload="none">
           <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
         </video>
       </a>
-
     </nav>
+  </div>
 
+  <!-- Centered title stays inside container -->
+  <div class="container header-inner">
+
+    <!-- Title -->
+    <a class="brand" href="{% url 'core:home' %}">OS Wizards</a>
+
+    <!-- Logo + profile row -->
+    <div class="header-row">
+      <img
+        src="{% static 'core/media/OSW-logo.png' %}"
+        alt="OS Wizards logo"
+        class="site-logo"
+      >
+
+      <button class="profile-btn" type="button">
+        My Profile
+      </button>
     </div>
-  </header>
+
+  </div>
+
+</header>
 
   <main class="site-main">
     <div class="container">

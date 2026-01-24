@@ -4,42 +4,64 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.querySelector(".nav-toggle");
   const nav = document.querySelector("#site-nav");
 
-  if (btn && nav) {
-    btn.addEventListener("click", () => {
-      const isOpen = btn.getAttribute("aria-expanded") === "true";
-      btn.setAttribute("aria-expanded", String(!isOpen));
+  if (!btn || !nav) return;
 
-      if (isOpen) {
-        nav.classList.remove("is-open");
-        // allow close animation then hide
-        setTimeout(() => {
-          nav.hidden = true;
-        }, 220);
-      } else {
-        nav.hidden = false;
-        requestAnimationFrame(() => nav.classList.add("is-open"));
-      }
+  const openNav = () => {
+    btn.setAttribute("aria-expanded", "true");
+    nav.hidden = false;
+    requestAnimationFrame(() => nav.classList.add("is-open"));
+  };
+
+  const closeNav = () => {
+    btn.setAttribute("aria-expanded", "false");
+    nav.classList.remove("is-open");
+
+    nav.querySelectorAll("video.lightning").forEach(v => {
+      v.pause();
+      v.currentTime = 0;
     });
-  }
 
-  // ----- Fire overlay: play on hover/focus, stop on leave/blur -----
+    const onEnd = (e) => {
+      if (e.propertyName !== "opacity") return; // pick one property
+      nav.hidden = true;
+      nav.removeEventListener("transitionend", onEnd);
+    };
+
+    nav.addEventListener("transitionend", onEnd);
+  };
+
+  // Toggle via button
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevent document click from firing
+    const isOpen = btn.getAttribute("aria-expanded") === "true";
+    isOpen ? closeNav() : openNav();
+  });
+
+  // Prevent clicks inside the scroll from closing it
+  nav.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  // Close when clicking anywhere else on the page
+  document.addEventListener("click", () => {
+    const isOpen = btn.getAttribute("aria-expanded") === "true";
+    if (isOpen) closeNav();
+  });
+
+  // ----- Lightning overlay: play on hover/focus, stop on leave/blur -----
   const links = document.querySelectorAll(".scroll-link");
 
   links.forEach((link) => {
-    const vid = link.querySelector("video.fire");
+    const vid = link.querySelector("video.lightning");
     if (!vid) return;
 
-    // make sure it's muted (required for autoplay in most browsers)
     vid.muted = true;
 
     const play = async () => {
       try {
         vid.currentTime = 0;
         await vid.play();
-      } catch (err) {
-        // Some browsers may still block play until user interaction.
-        // Hover/click usually counts, so this is mostly just a safe catch.
-      }
+      } catch {}
     };
 
     const stop = () => {

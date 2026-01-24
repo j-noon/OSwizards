@@ -1,4 +1,6 @@
-/* ---------- Base reset ---------- */
+/* =========================================================
+   BASE RESET + GLOBALS
+   ========================================================= */
 * { box-sizing: border-box; }
 
 html, body { height: 100%; }
@@ -7,206 +9,336 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   line-height: 1.5;
+  background-color: rgba(112, 62, 5, 0.658);
 }
 
-/* Layout container (kept from your setup) */
+/* =========================================================
+   LAYOUT WRAPPER
+   ========================================================= */
 .container {
-  width: min(1100px, 92%);
+  width: 100%;
   margin: 0 auto;
 }
 
-/* ---------- Theme vibes ---------- */
-:root{
+/* =========================================================
+   THEME VARIABLES
+   ========================================================= */
+:root {
   --ink: #1c120b;
-  --parchment: #f2e2c6;
-  --parchment-edge: #d2b48c;
   --shadow: rgba(0,0,0,.18);
+
+  /* Lightning tuning */
+  --zap-brightness: 1.25;
+  --zap-contrast: 2.35;
+  --zap-saturate: 1.35;
+  --zap-opacity: 1;
 }
 
-/* ---------- Header ---------- */
+/* =========================================================
+   HEADER + BRAND (MOBILE-FIRST)
+   ========================================================= */
 .site-header {
+  position: relative;
   border-bottom: 1px solid rgba(0,0,0,.10);
-  padding: 14px 0 10px;
+  padding: 12px 0 10px;
+  background-color: rgba(240, 132, 9, 0.45);
 }
 
 .header-inner {
-  display: grid;
-  gap: 10px;
-  justify-items: center; /* centers everything on mobile */
+  padding-top: 2px;
+  padding-left: 85px;
+  text-align: left;
 }
 
-/* Big bold centered title at top */
 .brand {
   text-decoration: none;
   color: var(--ink);
   font-weight: 900;
   letter-spacing: 0.5px;
-  font-size: 34px;
+  font-size: 30px;
   line-height: 1.05;
   text-transform: uppercase;
-  text-align: center;
+  display: block;
+  white-space: nowrap;
 }
 
-/* Toggle button */
+/* =========================================================
+   HEADER LOGO + PROFILE ROW
+   ========================================================= */
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  /* SAFE GUTTERS so nothing clips */
+  padding-left: 12px;
+  padding-right: 16px;
+}
+
+/* centered logo */
+.site-logo {
+  height: 72px;
+  width: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* =========================================================
+   PROFILE BUTTON (Arcane purple hum)
+   ========================================================= */
+
+.profile-btn {
+  appearance: none;
+  border: 1px solid rgba(0,0,0,.2);
+  background: linear-gradient(180deg, #fff7e6, #e9d1a8);
+  padding: 3px 6px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+  /* vertical positioning only */
+  --y: -25px;
+  transform: translateY(var(--y));
+  /* keeps glow clean */
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 140ms ease,
+    box-shadow 160ms ease,
+    filter 160ms ease;
+}
+
+.profile-btn:hover,
+.profile-btn:focus-visible {
+  transform: translateY(calc(var(--y) - 1px));
+
+  /* outer arcane aura */
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.25),
+    0 0 16px rgba(170, 90, 255, 0.85),
+    0 0 34px rgba(120, 60, 220, 0.75),
+    0 0 54px rgba(90, 30, 200, 0.50);
+
+  /* inner purple hum */
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.92),
+    rgba(210, 175, 255, 0.98)
+  );
+
+  filter:
+    brightness(1.14)
+    saturate(1.35);
+
+  outline: none;
+}
+.profile-btn:hover {
+  animation: arcaneHum 1.2s ease-in-out infinite;
+}
+
+@keyframes arcaneHum {
+  0%, 100% {
+    box-shadow:
+      0 8px 18px rgba(0,0,0,.25),
+      0 0 14px rgba(170, 90, 255, 0.65),
+      0 0 30px rgba(120, 60, 220, 0.55),
+      0 0 46px rgba(90, 30, 200, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 8px 18px rgba(0,0,0,.25),
+      0 0 22px rgba(190, 120, 255, 0.92),
+      0 0 44px rgba(140, 80, 240, 0.85),
+      0 0 68px rgba(110, 50, 230, 0.60);
+  }
+}
+
+/* =========================================================
+   NAV WRAP (TOP-LEFT)
+   ========================================================= */
+.nav-wrap {
+  position: absolute;
+  top: 10px;
+  left: -20px;
+  z-index: 50;
+}
+
+/* =========================================================
+   NAV TOGGLE BASE (fallback)
+   If your scroll image fails to load, this is what shows.
+   ========================================================= */
 .nav-toggle {
   appearance: none;
-  border: 1px solid rgba(0,0,0,.18);
-  background: linear-gradient(180deg, #fff7e6, #f0ddbd);
-  color: var(--ink);
-  padding: 10px 14px;
-  border-radius: 14px;
-  box-shadow: 0 8px 18px var(--shadow);
-  font-weight: 800;
   cursor: pointer;
+  margin: 0;
 }
 
-.nav-toggle:active {
-  transform: translateY(1px);
+/* =========================================================
+   SCROLL BUTTON (THE ACTUAL TOGGLE)
+   IMPORTANT: image path assumes:
+   core/static/core/css/base.css
+   core/static/core/media/scroll-closed.png
+   so url("../media/scroll-closed.png") is correct.
+   ========================================================= */
+.nav-toggle.scroll-btn {
+  width: 130px;
+  height: 52px;
+  background-image: url("../media/scroll-closed.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90%;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  display: grid;
+  place-items: center;
+  transform: translateY(0) scale(1);
+  transition: transform 140ms ease, filter 140ms ease;
 }
 
-/* ---------- Scroll dropdown (nav) ---------- */
+/* Clear “this is clickable” */
+.nav-toggle.scroll-btn:hover,
+.nav-toggle.scroll-btn:focus-visible {
+  transform: translateY(-3px) scale(1.05);
+  filter:
+    drop-shadow(0 14px 26px rgba(0,0,0,.38))
+    drop-shadow(0 0 18px rgba(80, 190, 255, 0.55))
+    brightness(1.05);
+  outline: none;
+}
+
+.nav-toggle.scroll-btn:active {
+  transform: translateY(0) scale(1.01);
+}
+
+/* =========================================================
+   NAV DROPDOWN (OPEN SCROLL PANEL)
+   Uses --scroll-bg from inline style in base.html
+   ========================================================= */
 .nav-scroll {
-  width: 100%;
-  max-width: 520px;
-
-  /* parchment scroll look */
-  background: radial-gradient(circle at 30% 20%, #fff7e6, var(--parchment));
-  border: 1px solid rgba(0,0,0,.18);
-  border-radius: 18px;
-  box-shadow: 0 14px 28px var(--shadow);
-
-  padding: 14px 14px 16px;
-  position: relative;
-
-  /* animation baseline */
+  position: absolute;
+  top: calc(100% - 25px);
+  left: 15px; 
+  z-index: 60;
+  width: max-content;
+  max-width: 88vw;
+  background: var(--scroll-bg) center / 100% 100% no-repeat;
+  padding: 44px 26px 36px;
+  border: none;
+  box-shadow: 0 14px 28px rgba(0,0,0,.18);
   transform-origin: top center;
   transform: scaleY(0.88);
   opacity: 0;
   max-height: 0;
-  overflow: hidden;
+  overflow: visible;
   transition: max-height 220ms ease, opacity 220ms ease, transform 220ms ease;
+  -webkit-mask-image: var(--scroll-bg);
+  mask-image: var(--scroll-bg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
 }
 
-/* Scroll “rollers” */
-.nav-scroll::before,
-.nav-scroll::after {
-  content: "";
-  position: absolute;
-  left: 10px;
-  right: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--parchment-edge), #f5e7cf, var(--parchment-edge));
-  box-shadow: 0 6px 14px rgba(0,0,0,.12);
-}
-
-.nav-scroll::before { top: -6px; }
-.nav-scroll::after  { bottom: -6px; }
-
-/* open state toggled by JS */
 .nav-scroll.is-open {
-  max-height: 360px;
+  max-height: 560px;
   opacity: 1;
   transform: scaleY(1);
 }
 
-/* Vertical “ink quill” links */
+/* =========================================================
+   NAV LINKS + LIGHTNING
+   ========================================================= */
 .scroll-link {
+  position: relative;
   display: block;
-  padding: 12px 12px;
-  margin: 6px 0;
-  border-radius: 14px;
+  padding: 10px 10px;
+  margin: 10px 0;
   text-decoration: none;
-
   color: var(--ink);
   font-weight: 900;
   letter-spacing: 0.2px;
   font-size: 18px;
-
-  background: rgba(255,255,255,.35);
-  border: 1px dashed rgba(0,0,0,.18);
-  position: relative;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  overflow: visible;
 }
 
-/* Spell fire hover */
-.scroll-link:hover {
-  animation: spellIgnite 650ms ease-in-out infinite alternate;
-  border-color: rgba(0,0,0,.3);
-}
-
-/* Glowing embers */
-.scroll-link:hover::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 16px;
-  pointer-events: none;
-  opacity: 0.9;
-  filter: blur(8px);
-  background: radial-gradient(circle at 20% 50%,
-    rgba(255,170,0,.55),
-    rgba(255,60,0,.35),
-    rgba(140,0,0,.18),
-    transparent 70%);
-  animation: emberFlicker 420ms ease-in-out infinite alternate;
-}
-
-/* --- Fire video overlay inside nav links --- */
-.scroll-link {
-  overflow: hidden; /* keep fire contained inside the link */
+.scroll-link:hover,
+.scroll-link:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  outline: none;
 }
 
 .link-text {
   position: relative;
-  z-index: 2; /* keep text above the fire */
+  z-index: 2;
+  transition: text-shadow 160ms ease, filter 160ms ease;
 }
 
-/* the video should NOT take up layout space */
-.fire {
+.scroll-link:hover .link-text,
+.scroll-link:focus-visible .link-text {
+  text-shadow:
+    0 0 10px rgba(80, 190, 255, 0.70),
+    0 0 18px rgba(40, 120, 255, 0.45);
+  filter: drop-shadow(0 0 6px rgba(40, 140, 255, 0.28));
+}
+
+/* =========================================================
+   LIGHTNING VIDEO
+   ========================================================= */
+.lightning {
   position: absolute;
-  left: -10%;
-  right: -10%;
-  bottom: -40%;
-  width: 120%;
-  height: 180%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 90px;
   z-index: 1;
-
-  opacity: 0;              /* hidden until hover */
-  pointer-events: none;    /* don't block clicking */
+  opacity: 0;
+  pointer-events: none;
   object-fit: cover;
-
-  /* optional: makes it glow/feel magical */
-  filter: blur(0.2px) brightness(1.1) contrast(1.05);
+  mix-blend-mode: screen;
+  filter:
+    brightness(var(--zap-brightness))
+    contrast(var(--zap-contrast))
+    saturate(var(--zap-saturate))
+    drop-shadow(0 0 10px rgba(90, 170, 255, 0.45))
+    drop-shadow(0 0 22px rgba(40, 120, 255, 0.25));
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 55%, transparent 82%);
+  mask-image: radial-gradient(ellipse at 50% 50%, #000 55%, transparent 82%);
   transition: opacity 160ms ease;
 }
 
-/* show video on hover + keyboard focus */
-.scroll-link:hover .fire,
-.scroll-link:focus-visible .fire {
-  opacity: 1;
+.scroll-link:hover .lightning,
+.scroll-link:focus-visible .lightning {
+  opacity: var(--zap-opacity);
 }
 
-@keyframes spellIgnite {
-  0%   { text-shadow: 0 0 0 rgba(0,0,0,0); transform: translateY(0); }
-  40%  { text-shadow: 0 0 10px rgba(255,120,0,.35), 0 0 18px rgba(255,40,0,.25); }
-  100% { text-shadow: 0 0 14px rgba(255,160,0,.45), 0 0 28px rgba(255,40,0,.3); transform: translateY(-1px); }
-}
-
-@keyframes emberFlicker {
-  0%   { opacity: 0.55; transform: scale(0.98); }
-  100% { opacity: 0.95; transform: scale(1.02); }
-}
-
-/* ---------- Main ---------- */
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
 .site-main {
   padding: 20px 0 30px;
   min-height: calc(100vh - 160px);
 }
 
-/* ---------- Footer (kept, lightly themed) ---------- */
+/* =========================================================
+   FOOTER
+   ========================================================= */
 .site-footer {
   border-top: 1px solid rgba(0,0,0,.10);
   padding: 16px 0;
+  background-color: rgba(240, 132, 9, 0.45);
 }
 
 .footer-inner {
@@ -233,12 +365,55 @@ body {
   font-weight: 800;
 }
 
-.social-link:hover {
-  text-decoration: underline;
+.social-link:hover { text-decoration: underline; }
+
+
+/* =========================================================
+   MEDIA QURRIES (>= 375px)
+   ========================================================= */
+@media (min-width: 375px) and (max-width: 767px) {
+  .profile-btn {
+    --x: 12px;
+    --y: -63px;
+  }
 }
 
-/* ---------- Larger screens (starter only) ---------- */
-@media (min-width: 860px) {
-  .brand { font-size: 42px; }
-  .nav-scroll { max-width: 420px; }
+/* =========================================================
+   DESKTOP OVERRIDES (>= 768px)
+   ========================================================= */
+@media (min-width: 768px) {
+  .header-inner {
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .brand {
+    font-size: 42px;
+    white-space: normal;
+  }
+
+  .nav-scroll {
+    max-width: 420px;
+  }
+    .profile-btn {
+    --x: 10px;
+    --y: -70px; /* tweak: -16 to -28 */
+  }
+}
+
+/* =========================================================
+   ULTRAWIDE (>= 1440px)
+   ========================================================= */
+@media (min-width: 1440px) {
+  .site-header .container {
+    width: min(1400px, 96%);  /* wider header content */
+  }
+
+  .header-row {
+    padding-right: 0;
+  }
+
+  .profile-btn {
+    --y: -70px;
+  }
 }
