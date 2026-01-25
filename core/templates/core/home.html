@@ -1,8 +1,36 @@
 {% extends "core/base.html" %}
+{% load static %}
 
 {% block title %}Home | OS Wizards{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+{% endblock %}
+
 {% block content %}
-  <h1>Home</h1>
-  <p>Welcome to OS Wizards.</p>
+
+<section class="home-hero">
+  <img
+    src="{% static 'core/media/oswizards-hero-image.png' %}"
+    alt="OS Wizards hero banner"
+    class="home-hero__img"
+  >
+</section>
+
+<section class="about-us">
+  <div class="about-us-content">
+    <h1 class="about-us-header">Welcome to OS Wizards</h1>
+    <p class="about-us-para">
+      OS Wizards is a shared tavern for the Oz Wizards community — a single place to unwind, 
+      chat, and conjure up ideas for future streams. It’s where misfits, role-players,
+      and chaos-friendly adventurers come together to share laughs, pitch wild campaign ideas,
+      and even apply to jump into games with the Dungeon Masters themselves. Between quests,
+      you can tackle mini-games to earn points toward discounts in the merch shop, all while soaking
+      up good vibes and questionable decisions. We don’t take ourselves too seriously — we just 
+      love great stories, ridiculous moments, and building something fun together.
+    </p>
+  </div>
+</section>
+
+
 {% endblock %}
