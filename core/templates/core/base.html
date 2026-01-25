@@ -1,5 +1,4 @@
 {% load static %}
-{% block extra_css %}{% endblock %}
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -24,6 +23,7 @@
 
   <!-- CSS + JS -->
   <link rel="stylesheet" href="{% static 'core/css/base.css' %}">
+  {% block extra_css %}{% endblock %}
   <script defer src="{% static 'core/js/nav.js' %}"></script>
 </head>
 
@@ -45,12 +45,21 @@
         </video>
       </a>
 
-      <a class="scroll-link" data-label="login" href="{% url 'core:home' %}">
-        <span class="link-text">Login/Register</span>
+    {% if user.is_authenticated %}
+      <a class="scroll-link" data-label="Logout" href="{% url 'account_logout' %}">
+        <span class="link-text">Logout</span>
         <video class="lightning" muted loop playsinline preload="none">
           <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
         </video>
       </a>
+    {% else %}
+      <a class="scroll-link" data-label="Login" href="{% url 'core:login_page' %}">
+        <span class="link-text">Login</span>
+        <video class="lightning" muted loop playsinline preload="none">
+          <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
+        </video>
+      </a>
+    {% endif %}
 
       <a class="scroll-link" data-label="Merch" href="{% url 'merchandise:merch' %}">
         <span class="link-text">Merch</span>

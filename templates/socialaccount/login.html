@@ -1,0 +1,37 @@
+<!-- USING CORE OVERRIDE TEMPLATE -->
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Continue with Discord{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="login-page">
+  <div class="login-card">
+
+    <picture>
+      <source media="(max-width: 767px)" srcset="{% static 'core/media/parchment-mobile.webp' %}">
+      <img class="parchment-img" src="{% static 'core/media/parchment.webp' %}" alt="" aria-hidden="true">
+    </picture>
+
+    <div class="login-overlay">
+      <h1 class="login-title">Continue with Discord</h1>
+      <p class="login-subtitle">You’re about to sign in using your Discord account.</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <button class="discord-btn" type="submit">Continue</button>
+      </form>
+
+      <div class="login-help">
+        <p class="help-title">Changed your mind?</p>
+        <p><a href="{% url 'core:login_page' %}">Go back</a></p>
+      </div>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

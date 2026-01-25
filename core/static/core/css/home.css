@@ -145,8 +145,8 @@
 
     background-repeat: no-repeat;
     background-position: top center;
-    background-size: 100% auto;      /* 👈 NO zoom/crop creep */
-    min-height: calc(100vw / 1.4);   /* 👈 controls height for full image */
+    background-size: 100% auto;
+    min-height: calc(100vw / 1.4);
   }
 
   .about-us-content {

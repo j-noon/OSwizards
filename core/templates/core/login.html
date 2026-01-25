@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="login-page">
+  <div class="login-card">
+
+    <picture>
+    <source
+        media="(max-width: 767px)"
+        srcset="{% static 'core/media/parchment-mobile.webp' %}">
+
+    <img
+        class="parchment-img"
+        src="{% static 'core/media/parchment.webp' %}"
+        alt=""
+        aria-hidden="true">
+    </picture>
+
+    <div class="login-overlay">
+      <h1 class="login-title">Log in</h1>
+      <p class="login-subtitle">Use Discord to sign in to OSwizards.</p>
+
+        <a class="discord-btn" href="/accounts/discord/login/?process=login">
+        Login with Discord
+        </a>
+
+      <div class="login-help">
+        <p class="help-title">Don’t have Discord?</p>
+        <p>
+          Create a free Discord account, then come back here and log in.
+          <a href="https://discord.com/register" target="_blank" rel="noopener noreferrer">
+            Create a Discord account
+          </a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</main>
+{% endblock %}
