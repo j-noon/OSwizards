@@ -93,75 +93,68 @@ p {
 }
 
 /* =========================================================
-   PROFILE BUTTON (Arcane purple hum)
+   PROFILE BUTTON — PARCHMENT STYLE
    ========================================================= */
 
 .profile-btn {
   appearance: none;
-  border: 1px solid rgb(77, 228, 18);
-  background: linear-gradient(180deg, #f3f7f4, #e5ece6);
-  padding: 3px 6px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 12px;
-  color: var(--ink);
+  border: 0;
+  background: transparent;
+  padding: 0;
   cursor: pointer;
   white-space: nowrap;
-  /* vertical positioning only */
+
+  --x: 0px;
   --y: -25px;
-  transform: translateY(var(--y));
-  /* keeps glow clean */
-  position: relative;
-  isolation: isolate;
-  transition:
-    transform 140ms ease,
-    box-shadow 160ms ease,
-    filter 160ms ease;
+  transform: translate(var(--x), var(--y));
+  transition: transform 160ms ease, filter 160ms ease;
+  flex: 0 0 auto;
 }
 
-.profile-btn:hover,
-.profile-btn:focus-visible {
-  transform: translateY(calc(var(--y) - 1px));
+.profile-btn--parchment {
+  width: 120px;
+  height: 30px;
+  display: inline-grid;
+  place-items: center;
+  background-image: var(--profile-btn-bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 
-  /* outer arcane aura */
-  box-shadow:
-    0 8px 18px rgba(9, 230, 64, 0.25),
-    0 0 16px rgba(3, 243, 75, 0.85),
-    0 0 34px rgba(2, 179, 31, 0.75),
-    0 0 54px rgba(4, 238, 35, 0.5);
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.35));
+}
 
-  /* inner purple hum */
-  background: linear-gradient(
-    180deg,
-    rgba(10, 228, 28, 0.92),
-    rgba(8, 231, 56, 0.98)
-  );
+.profile-btn__text {
+  font-family: "Cinzel", serif;
+  font-weight: 800;
+  font-size: 8px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1c120b;
+  text-decoration: none;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+  pointer-events: none;
+}
 
-  filter:
-    brightness(1.14)
-    saturate(1.35);
-
+/* Hover (logged in only) */
+.profile-btn--parchment:hover,
+.profile-btn--parchment:focus-visible {
+  transform: translate(var(--x), calc(var(--y) - 2px)) scale(1.04);
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.45));
   outline: none;
 }
-.profile-btn:hover {
-  animation: arcaneHum 1.2s ease-in-out infinite;
+
+/* Disabled (logged out) */
+.profile-btn--disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  filter: grayscale(1) drop-shadow(0 6px 12px rgba(0,0,0,0.25));
 }
 
-@keyframes arcaneHum {
-  0%, 100% {
-    box-shadow:
-      0 8px 18px rgba(0, 0, 0, 0.25),
-      0 0 14px rgba(5, 226, 71, 0.65),
-      0 0 30px rgba(5, 231, 62, 0.55),
-      0 0 46px rgba(13, 238, 81, 0.35);
-  }
-  50% {
-    box-shadow:
-      0 8px 18px rgba(0,0,0,.25),
-      0 0 22px rgba(3, 231, 71, 0.92),
-      0 0 44px rgba(6, 243, 46, 0.85),
-      0 0 68px rgba(23, 197, 7, 0.6);
-  }
+.profile-btn--disabled:hover,
+.profile-btn--disabled:focus-visible {
+  transform: translate(var(--x), var(--y));
+  filter: grayscale(1) drop-shadow(0 6px 12px rgba(0,0,0,0.25));
 }
 
 /* =========================================================
@@ -339,6 +332,185 @@ p {
   padding: 20px 0 30px;
 }
 
+
+/* =========================================================
+      PROFILE MODAL
+   ========================================================= */
+
+.profile-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.55);
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.profile-modal[hidden] { display: none !important; }
+
+.profile-card {
+  width: min(560px, 94vw);
+  border-radius: 16px;
+  padding: 1.25rem 1.25rem 1rem;
+  background: rgba(20, 22, 30, 0.94);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+  position: relative;
+}
+
+.profile-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 1.6rem;
+  z-index: 99999; 
+  pointer-events: auto;
+}
+
+.online-dot {
+  margin-top: 2px;
+  pointer-events: none;
+}
+
+.profile-name-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* space between name and dot */
+}
+
+.profile-name-row {
+  display: flex;
+  justify-content: flex-start;
+  padding-right: 48px;
+}
+
+.profile-name {
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.online-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #25d366;
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.18);
+}
+
+.profile-meta {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.meta-pill {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.profile-body {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-avatar-wrap {
+  display: grid;
+  place-items: center;
+}
+
+.profile-avatar {
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.18);
+}
+
+.profile-currency {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+}
+
+.profile-bio p {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+}
+
+.muted {
+  opacity: 0.75;
+}
+
+.profile-socials {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-family: "Inter", sans-serif;
+}
+
+.profile-socials a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.profile-actions {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+}
+
+.profile-link {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 700;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.edit-panel {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.form-stack {
+  display: grid;
+  gap: 0.5rem;
+  width: min(440px, 100%);
+  margin: 0 auto 1rem;
+  font-family: "Inter", sans-serif;
+}
+
+.form-stack input,
+.form-stack textarea {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.25);
+  color: #fff;
+}
+
 /* =========================================================
    FOOTER (fixed, always visible, arcane vibe)
    ========================================================= */
@@ -484,10 +656,11 @@ p {
    ========================================================= */
 @media (min-width: 375px) and (max-width: 767px) {
   .profile-btn {
-    --x: 12px;
-    --y: -63px;
+    --x: -5px;
+    --y: -33px;
   }
 }
+
 
 /* =========================================================
    DESKTOP OVERRIDES (>= 768px)
@@ -507,13 +680,23 @@ p {
     max-width: 420px;
   }
     .profile-btn {
-    --x: 10px;
+    --x: -30px;
     --y: -70px; /* tweak: -16 to -28 */
   }
     .footer-social {
     flex-direction: row;         /* 👈 inline again */
     align-items: center;
     gap: 14px;
+  }
+}
+
+/* =========================================================
+   ULTRAWIDE (>= 1024px)
+   ========================================================= */
+@media (min-width: 1024px) {
+  .profile-btn {
+    --x: -50px;
+    --y: -70px;
   }
 }
 
@@ -531,6 +714,7 @@ p {
   }
 
   .profile-btn {
+    --x: -80px;
     --y: -70px;
   }
 }

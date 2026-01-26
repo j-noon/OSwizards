@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.discord",
 
-    "core",
+    "core.apps.CoreConfig",
     "merchandise",
     "games",
 ]

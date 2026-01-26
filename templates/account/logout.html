@@ -1,0 +1,45 @@
+{# USING CORE OVERRIDE TEMPLATE #}
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Sign Out{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="login-page">
+  <div class="login-card">
+
+    <picture>
+      <source media="(max-width: 767px)" srcset="{% static 'core/media/parchment-mobile.webp' %}">
+      <img class="parchment-img" src="{% static 'core/media/parchment.webp' %}" alt="" aria-hidden="true">
+    </picture>
+
+    <div class="login-overlay">
+      <h1 class="login-title">Sign Out</h1>
+      <p class="login-subtitle">Are you sure you wish to log out?</p>
+
+      <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+
+        {# keep redirect behaviour if allauth provides it #}
+        {% if redirect_field_value %}
+          <input type="hidden"
+                 name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}">
+        {% endif %}
+
+        <button class="discord-btn" type="submit">Log Out</button>
+      </form>
+
+      <div class="login-help">
+        <p class="help-title">Changed your mind?</p>
+        <p><a href="{% url 'core:home' %}">Go back</a></p>
+      </div>
+    </div>
+
+  </div>
+</main>
+{% endblock %}
