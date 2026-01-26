@@ -29,5 +29,7 @@ class Profile(models.Model):
     # Currency placeholder
     currency = models.PositiveIntegerField(default=0)
 
+    setup_completed = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.user.username} Profile"

@@ -48,7 +48,7 @@ p {
 .site-header {
   position: relative;
   border-bottom: 1px solid rgba(0,0,0,.10);
-  padding: 12px 0 10px;
+  padding: 5px 0 10px;
   background-color: rgba(240, 132, 9, 0.45);
 }
 
@@ -194,6 +194,7 @@ p {
   background-color: transparent;
   border: none;
   border-radius: 0;
+  margin-top: 8px;
   padding: 0;
   box-shadow: none;
   display: grid;
@@ -224,7 +225,7 @@ p {
 .nav-scroll {
   position: absolute;
   top: calc(100% - 80px);
-  left: 15px; 
+  left: 20px; 
   z-index: 60;
   width: max-content;
   max-width: 88vw;
@@ -260,8 +261,8 @@ p {
 .scroll-link {
   position: relative;
   display: block;
-  padding: 10px 10px;
-  margin: 10px 0;
+  padding: 5px 5px;
+  margin: 3px 0;
   text-decoration: none;
   color: var(--ink);
   font-weight: 900;
@@ -708,15 +709,11 @@ p {
   background: rgba(120, 40, 40, 0.14);
   border: 1px solid rgba(180, 60, 60, 0.35);
   color: #5b1f1f;
-
   padding: 0.75rem 1rem;
   margin: 0 0 0.75rem;
-
   border-radius: 12px;
-
   font-family: "Inter", sans-serif;
   font-size: 0.92rem;
-
   box-shadow: 0 0 10px rgba(180, 60, 60, 0.25);
 }
 
@@ -867,10 +864,20 @@ p {
 /* =========================================================
    MEDIA QURRIES (>= 375px)
    ========================================================= */
-@media (min-width: 375px) and (max-width: 767px) {
+@media (min-width: 375px) and (max-width: 424px) {
   .profile-btn {
-    --x: -5px;
-    --y: -33px;
+    --x: 10px;
+    --y: -35px;
+  }
+}
+
+/* =========================================================
+   MEDIA QURRIES (>= 425px)
+   ========================================================= */
+@media (min-width: 425px) and (max-width: 767px) {
+  .profile-btn {
+    --x: 10px;
+    --y: -60px;
   }
 }
 
@@ -930,4 +937,8 @@ p {
     --x: -80px;
     --y: -70px;
   }
+
+  .brand {
+    margin-left: -100px;
+}
 }

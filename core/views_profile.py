@@ -9,7 +9,10 @@ from .models import Profile
 
 @login_required
 def profile_page(request):
-    profile, _ = Profile.objects.get_or_create(user=request.user)
+    profile, _ = Profile.objects.get_or_create(
+        user=request.user,
+        defaults={"timezone": "Europe/London"},
+    )
     form = ProfileForm(request.POST, request.FILES, instance=profile)
     return render(
         request,
@@ -24,12 +27,17 @@ def profile_page(request):
 
 @login_required
 def profile_edit(request):
-    profile, _ = Profile.objects.get_or_create(user=request.user)
+    profile, _ = Profile.objects.get_or_create(
+        user=request.user,
+        defaults={"timezone": "Europe/London"},
+    )
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
+            profile = form.save(commit=False)
+            profile.setup_completed = True
+            profile.save()
             return redirect(reverse("core:profile"))
 
         return render(

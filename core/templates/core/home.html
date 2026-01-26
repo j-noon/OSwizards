@@ -17,6 +17,13 @@
   >
 </section>
 
+{% if user.is_authenticated and show_profile_banner %}
+  <div class="profile-banner" role="status" aria-live="polite">
+    Your character sheet is incomplete.  
+    Complete your profile to ensure all site features work as intended.
+  </div>
+{% endif %}
+
 <section class="about-us">
   <div class="about-us-content">
     <h1 class="about-us-header">Welcome to OS Wizards</h1>
@@ -31,6 +38,16 @@
     </p>
   </div>
 </section>
+
+{% if show_profile_setup %}
+<script>
+  window.OSWIZ_SHOW_PROFILE_SETUP = true;
+</script>
+{% else %}
+<script>
+  window.OSWIZ_SHOW_PROFILE_SETUP = false;
+</script>
+{% endif %}
 
 
 {% endblock %}

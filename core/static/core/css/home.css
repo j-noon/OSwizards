@@ -21,6 +21,24 @@
 }
 
 
+/* ------------------------------
+      PROF PROMPT BANNER
+-------------------------------- */
+.profile-banner{
+  width:fit-content;
+  margin: 0 auto 16px;
+  padding: 5px 5px;
+  border-radius: 14px;
+  background: rgba(245, 225, 190, 0.7);
+  border: 1px solid rgba(120, 80, 200, 0.35);
+  color: #1b140d;
+  font-family: "Cinzel", serif;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+
 /* =====================================================
                      ABOUT US
    ===================================================== */
