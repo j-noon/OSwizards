@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.discord",
 
     "core.apps.CoreConfig",
+    "cloudinary",
+    "cloudinary_storage",
     "merchandise",
     "games",
 ]
@@ -69,6 +71,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.profile_modal_context",
             ],
         },
     },
@@ -133,3 +136,8 @@ ACCOUNT_SIGNUP_FIELDS = ["username*"]
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_QUERY_EMAIL = False
+
+
+# CLOUNDINARY SETTINGS
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+MEDIA_URL = "/media/"

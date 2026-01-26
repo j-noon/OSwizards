@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 
 class Profile(models.Model):
@@ -23,7 +24,7 @@ class Profile(models.Model):
     website_url = models.URLField(blank=True)
 
     # Phase 1 avatar storage: URL
-    avatar_url = models.URLField(blank=True)
+    avatar = CloudinaryField("avatar", blank=True, null=True)
 
     # Currency placeholder
     currency = models.PositiveIntegerField(default=0)

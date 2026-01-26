@@ -1,0 +1,80 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="profile-section">
+  <h1 class="profile-title">My Profile</h1>
+
+  <div class="profile-card">
+
+    <div class="profile-header">
+      {% if profile.avatar %}
+        <img class="profile-avatar" src="{{ profile.avatar.url }}" alt="Profile avatar">
+      {% else %}
+        <img class="profile-avatar" src="{% static 'core/media/default-login.webp' %}" alt="Default profile avatar">
+      {% endif %}
+
+      <div class="profile-meta">
+        <h2 class="profile-name">
+          {{ profile.display_name|default:user.username }}
+        </h2>
+
+        {% if profile.pronouns %}
+          <div class="profile-line">Pronouns: <strong>{{ profile.pronouns }}</strong></div>
+        {% endif %}
+
+        {% if profile.timezone %}
+        <div class="profile-line">Timezone: <strong>{{ profile.timezone }}</strong></div>
+        {% endif %}
+
+        <div class="profile-currency">
+        🎲 <span>x {{ profile.currency }}</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="profile-divider">
+
+    <div class="profile-block">
+      <h3 class="profile-subtitle">Bio</h3>
+      {% if profile.bio %}
+        <p class="profile-text">{{ profile.bio }}</p>
+      {% else %}
+        <p class="profile-muted">No bio yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="profile-block">
+      <h3 class="profile-subtitle">Contact</h3>
+      {% if profile.contact_email %}
+        <p class="profile-text">{{ profile.contact_email }}</p>
+      {% else %}
+        <p class="profile-muted">No email saved.</p>
+      {% endif %}
+    </div>
+
+    <div class="profile-block">
+      <h3 class="profile-subtitle">Social Links</h3>
+      <ul class="profile-links">
+        {% if profile.twitch_url %}<li><a href="{{ profile.twitch_url }}" target="_blank" rel="noopener">Twitch</a></li>{% endif %}
+        {% if profile.youtube_url %}<li><a href="{{ profile.youtube_url }}" target="_blank" rel="noopener">YouTube</a></li>{% endif %}
+        {% if profile.website_url %}<li><a href="{{ profile.website_url }}" target="_blank" rel="noopener">Website</a></li>{% endif %}
+        {% if not profile.twitch_url and not profile.youtube_url and not profile.website_url %}
+          <li class="profile-muted">No links yet.</li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="profile-footer">
+      <a class="profile-link" href="{% url 'core:home' %}">Back to home</a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

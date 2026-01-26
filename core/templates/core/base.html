@@ -47,6 +47,14 @@
       </a>
 
     {% if user.is_authenticated %}
+
+      <a class="scroll-link" data-label="Profile" href="{% url 'core:profile' %}">
+        <span class="link-text">Profile</span>
+        <video class="lightning" muted loop playsinline preload="none">
+          <source src="{% static 'core/media/lighting.webm' %}" type="video/webm">
+        </video>
+      </a>
+
       <a class="scroll-link" data-label="Logout" href="{% url 'account_logout' %}">
         <span class="link-text">Logout</span>
         <video class="lightning" muted loop playsinline preload="none">
@@ -152,78 +160,83 @@
     </div>
   </footer>
 
-<!-- MODAL FOR PROFILE-->
-{% if user.is_authenticated %}
-<div class="profile-modal" hidden data-profile-modal>
-  <div class="profile-card" role="dialog" aria-modal="true" aria-label="My Profile">
-    <button class="profile-close" type="button" data-profile-close aria-label="Close">×</button>
+<!---------------------------
+     MODAL FOR PROFILE       
+----------------------------->
 
-    <div class="profile-header">
-      <div class="profile-name-row">
-        <span class="profile-name-wrap">
-          <span class="profile-name">
+{% if user.is_authenticated %}
+<div class="pm-modal" {% if form.errors %}{% else %}hidden{% endif %} data-profile-modal>
+  <div class="pm-card" role="dialog" aria-modal="true" aria-label="My Profile">
+    <button class="pm-close" type="button" data-profile-close aria-label="Close">×</button>
+
+    <div class="pm-header">
+      <div class="pm-name-row">
+        <span class="pm-name-wrap">
+          <span class="pm-name">
             {{ user.profile.display_name|default:user.username }}
           </span>
-          <span class="online-dot" aria-hidden="true"></span>
+          <span class="pm-online-dot" aria-hidden="true"></span>
         </span>
       </div>
 
-      <div class="profile-meta">
-        {% if user.profile.pronouns %}<span class="meta-pill">{{ user.profile.pronouns }}</span>{% endif %}
-        {% if user.profile.timezone %}<span class="meta-pill">{{ user.profile.timezone }}</span>{% endif %}
+      <div class="pm-meta">
+        {% if user.profile.pronouns %}<span class="pm-pill">{{ user.profile.pronouns }}</span>{% endif %}
+        {% if user.profile.timezone %}<span class="pm-pill">{{ user.profile.timezone }}</span>{% endif %}
       </div>
     </div>
 
-    <div class="profile-body">
-      <div class="profile-avatar-wrap">
-        {% if user.profile.avatar_url %}
-          <img
-            class="profile-avatar"
-            src="{{ user.profile.avatar_url }}"
-            alt="Profile avatar"
-          >
+    <div class="pm-body">
+      <div class="pm-avatar-wrap">
+        {% if user.profile.avatar %}
+          <img class="pm-avatar" src="{{ user.profile.avatar.url }}" alt="Profile avatar">
         {% else %}
-          <img
-            class="profile-avatar"
-            src="{% static 'core/media/default-login.webp' %}"
-            alt="Default profile avatar"
-          >
+          <img class="pm-avatar" src="{% static 'core/media/default-login.webp' %}" alt="Default profile avatar">
         {% endif %}
       </div>
 
-      <div class="profile-currency">
-        <span class="dice-icon" aria-hidden="true">🎲</span>
-        <span class="currency-text">x {{ user.profile.currency }}</span>
+      <div class="pm-currency">
+        <span aria-hidden="true">🎲</span>
+        <span>x {{ user.profile.currency }}</span>
       </div>
 
-      <div class="profile-bio">
+      <div class="pm-bio">
         {% if user.profile.bio %}
           <p>{{ user.profile.bio }}</p>
         {% else %}
-          <p class="muted">No bio yet.</p>
+          <p class="pm-muted">No bio yet.</p>
         {% endif %}
       </div>
 
-      <div class="profile-socials">
+      <div class="pm-socials">
         {% if user.profile.twitch_url %}<a href="{{ user.profile.twitch_url }}" target="_blank" rel="noopener">Twitch</a>{% endif %}
         {% if user.profile.youtube_url %}<a href="{{ user.profile.youtube_url }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
         {% if user.profile.website_url %}<a href="{{ user.profile.website_url }}" target="_blank" rel="noopener">Website</a>{% endif %}
       </div>
 
-      <div class="profile-actions">
+      <div class="pm-actions">
         <button class="discord-btn" type="button" data-edit-open>Edit Profile</button>
-        <a class="profile-link" href="{% url 'core:profile' %}">View full profile</a>
+        <a class="pm-link" href="{% url 'core:profile' %}">View full profile</a>
       </div>
     </div>
 
     <!-- Edit panel -->
-    <div class="edit-panel" hidden data-edit-panel>
+    <div class="pm-edit" {% if form.errors %}{% else %}hidden{% endif %} data-edit-panel>
       <h2 class="login-title" style="margin-top: 0;">Edit Profile</h2>
 
-      <form method="post" action="{% url 'core:profile_edit' %}">
+      {% if form.errors %}
+        <div class="pm-form-errors" role="alert" aria-live="polite">
+          {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" action="{% url 'core:profile_edit' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <div class="form-stack">
+        <div class="pm-form">
           <label>Display name</label>
           <input type="text" name="display_name" value="{{ user.profile.display_name }}">
 
@@ -231,16 +244,42 @@
           <input type="text" name="pronouns" value="{{ user.profile.pronouns }}">
 
           <label>Timezone</label>
-          <input type="text" name="timezone" value="{{ user.profile.timezone }}">
+          <select name="timezone">
+            <option value="">Select your timezone…</option>
+            {% for tz in timezones %}
+              <option value="{{ tz }}" {% if user.profile.timezone == tz %}selected{% endif %}>{{ tz }}</option>
+            {% endfor %}
+          </select>
 
           <label>Bio</label>
           <textarea name="bio" rows="4">{{ user.profile.bio }}</textarea>
 
-          <label>Email (optional)</label>
+          <label>Email</label>
           <input type="email" name="contact_email" value="{{ user.profile.contact_email }}">
 
-          <label>Avatar URL (temporary)</label>
-          <input type="url" name="avatar_url" value="{{ user.profile.avatar_url }}">
+          <label>Avatar (PNG or JPG)</label>
+
+          <div class="pm-file-upload">
+            <input
+              type="file"
+              name="avatar"
+              id="avatar-input"
+              accept="image/png,image/jpeg"
+              hidden
+            >
+
+            <button
+              type="button"
+              class="pm-file-btn"
+              data-file-trigger
+            >
+              Choose file
+            </button>
+
+            <span class="pm-file-name" data-file-name>
+              No file chosen
+            </span>
+          </div>
 
           <label>Twitch URL</label>
           <input type="url" name="twitch_url" value="{{ user.profile.twitch_url }}">
@@ -253,12 +292,14 @@
         </div>
 
         <button class="discord-btn" type="submit">Save</button>
-        <button class="profile-link" type="button" data-edit-close>Cancel</button>
+        <button class="pm-link" type="button" data-edit-close>Cancel</button>
       </form>
     </div>
 
   </div>
 </div>
 {% endif %}
+
+
 </body>
 </html>

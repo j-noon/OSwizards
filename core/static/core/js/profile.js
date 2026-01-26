@@ -31,22 +31,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Close when clicking outside the card
   modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      close();
-    }
+    if (e.target === modal) close();
   });
 
   // Prevent clicks inside the card from bubbling
-  const card = modal.querySelector(".profile-card");
-  card?.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
+  const card = modal.querySelector(".pm-card");
+  card?.addEventListener("click", (e) => e.stopPropagation());
 
   // Close with ESC
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !modal.hidden) {
-      close();
-    }
+    if (e.key === "Escape" && !modal.hidden) close();
   });
 
   // Open edit panel
@@ -59,5 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
   editClose?.addEventListener("click", (e) => {
     e.stopPropagation();
     if (editPanel) editPanel.hidden = true;
+  });
+
+  const fileTrigger = document.querySelector("[data-file-trigger]");
+  const fileInput = document.getElementById("avatar-input");
+  const fileName = document.querySelector("[data-file-name]");
+
+  fileTrigger?.addEventListener("click", () => fileInput.click());
+
+  fileInput?.addEventListener("change", () => {
+    fileName.textContent = fileInput.files[0]?.name || "No file chosen";
   });
 });

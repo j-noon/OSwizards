@@ -1,0 +1,161 @@
+/* =========================
+   PROFILE (PARCHMENT SHEET)
+   Mobile parchment image (single, no repeat)
+   Centered on page, content fits inside
+   ========================= */
+
+.profile-section{
+  padding: 1.5rem 0 2rem;
+  background: transparent;
+
+  /* centers the sheet nicely */
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+}
+
+.profile-title{
+  margin: 0;
+  width: min(520px, 92vw);
+}
+
+/* The parchment “sheet” */
+.profile-card{
+  background-image: url("../media/parchment-mobile.webp");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+
+  /* Make the parchment a sensible, centered size */
+  width: min(520px, 92vw);
+  min-height: 900px;         /* gives room for all the text */
+  margin: 0 auto;
+
+  /* Push content into the parchment “safe area” */
+  padding: 5.25rem 1.75rem 4.5rem 1.75rem;
+
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+
+  color: #1b140d;
+
+  /* IMPORTANT: don’t clip your text */
+  overflow: visible;
+}
+
+/* Header layout */
+.profile-header{
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+
+/* Force the meta list to stack vertically on the profile page */
+.profile-meta{
+  display: block;   /* overrides base.css flex */
+}
+
+/* Make each line a proper row */
+.profile-line,
+.profile-currency{
+  display: block;
+  margin-left: 0;   /* remove the indent */
+}
+
+.profile-avatar{
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.profile-name{
+  margin: 0 0 0.25rem;
+}
+
+/* Small “meta” lines */
+.profile-line{
+  opacity: 0.9;
+}
+
+.profile-currency{
+  margin-top: 0.4rem;
+  margin-left: 0;
+  font-weight: 700;
+  display: block;
+}
+
+/* Divider */
+.profile-divider{
+  border: 0;
+  border-top: 1px solid rgba(43,27,16,0.25);
+  margin: 0.9rem 0;
+}
+
+/* Content blocks */
+.profile-block{
+  margin-bottom: 0.75rem;
+}
+
+.profile-subtitle{
+  margin: 0 0 0.35rem;
+}
+
+.profile-text,
+.profile-muted{
+  margin: 0;
+  line-height: 1.25;
+}
+
+.profile-text{ opacity: 0.95; }
+.profile-muted{ opacity: 0.75; }
+
+/* Links */
+.profile-links{
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style: none;
+}
+
+.profile-links a,
+.profile-link{
+  color: #2b1b10;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* Base link styling */
+.profile-links a,
+.profile-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  color: #2b1b10;
+  font-weight: 800;
+  text-decoration: none;
+
+  padding: 0.2rem 0.35rem;
+  border-radius: 10px;
+
+  transform: translateZ(0);
+  transition: transform 140ms ease, filter 140ms ease, text-shadow 140ms ease;
+}
+
+/* Necromancy "charge" on hover */
+.profile-links a:hover,
+.profile-links a:focus-visible,
+.profile-link:hover,
+.profile-link:focus-visible{
+  transform: scale(1.08);
+  text-shadow:
+    0 0 10px rgba(80, 255, 140, 0.85),
+    0 0 18px rgba(40, 220, 120, 0.55);
+  filter:
+    drop-shadow(0 0 8px rgba(60, 255, 150, 0.55))
+    drop-shadow(0 0 16px rgba(40, 200, 120, 0.35));
+  outline: none;
+}
