@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "merchandise",
     "games",
+    "stream",
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "stream.middleware.UserTimezoneMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -101,9 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
-USE_I18N = True
 USE_TZ = True
+TIME_ZONE = "Europe/London"
 
 
 # Static files
@@ -141,3 +142,7 @@ SOCIALACCOUNT_QUERY_EMAIL = False
 # CLOUNDINARY SETTINGS
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 MEDIA_URL = "/media/"
+
+# TWITCH SECRETS
+TWITCH_CLIENT_ID = os.environ.get("TWITCH_CLIENT_ID")
+TWITCH_CLIENT_SECRET = os.environ.get("TWITCH_CLIENT_SECRET")

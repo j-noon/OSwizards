@@ -23,4 +23,5 @@ urlpatterns = [
     path("merch/", include("merchandise.urls")),
     path("games/", include("games.urls")),
     path("", include("core.urls")),
+    path("stream/", include("stream.urls")),
 ]

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const openBtn = document.querySelector("[data-profile-open]");
+  const openBtns = document.querySelectorAll("[data-profile-open]");
   const modal = document.querySelector("[data-profile-modal]");
   const closeBtn = document.querySelector("[data-profile-close]");
 
@@ -7,11 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const editPanel = document.querySelector("[data-edit-panel]");
   const editClose = document.querySelector("[data-edit-close]");
 
-  if (!openBtn || !modal) return;
+  if (!openBtns.length || !modal) return;
 
   const open = () => {
     modal.hidden = false;
     document.body.style.overflow = "hidden";
+
+    // Always show edit panel when opening via banner / profile
+    if (editPanel) editPanel.hidden = false;
   };
 
   const close = () => {
@@ -20,48 +23,58 @@ document.addEventListener("DOMContentLoaded", () => {
     if (editPanel) editPanel.hidden = true;
   };
 
-  // Open modal
-  openBtn.addEventListener("click", open);
+  /* =========================
+     OPEN MODAL (ALL TRIGGERS)
+     ========================= */
+  openBtns.forEach((btn) => {
+    btn.addEventListener("click", open);
+  });
 
-  // Close via X button
+  /* =========================
+     CLOSE MODAL
+     ========================= */
   closeBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
     close();
   });
 
-  // Close when clicking outside the card
   modal.addEventListener("click", (e) => {
     if (e.target === modal) close();
   });
 
-  // Prevent clicks inside the card from bubbling
   const card = modal.querySelector(".pm-card");
   card?.addEventListener("click", (e) => e.stopPropagation());
 
-  // Close with ESC
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !modal.hidden) close();
   });
 
-  // Open edit panel
+  /* =========================
+     EDIT PANEL TOGGLE
+     ========================= */
   editOpen?.addEventListener("click", (e) => {
     e.stopPropagation();
     if (editPanel) editPanel.hidden = false;
   });
 
-  // Close edit panel
   editClose?.addEventListener("click", (e) => {
     e.stopPropagation();
     if (editPanel) editPanel.hidden = true;
   });
 
+  /* =========================
+     FILE UPLOAD UX
+     ========================= */
   const fileTrigger = document.querySelector("[data-file-trigger]");
   const fileInput = document.getElementById("avatar-input");
   const fileName = document.querySelector("[data-file-name]");
 
-  fileTrigger?.addEventListener("click", () => fileInput.click());
+  fileTrigger?.addEventListener("click", () => {
+    fileInput?.click();
+  });
 
   fileInput?.addEventListener("change", () => {
-    fileName.textContent = fileInput.files[0]?.name || "No file chosen";
+    fileName.textContent =
+      fileInput.files[0]?.name || "No file chosen";
   });
 });

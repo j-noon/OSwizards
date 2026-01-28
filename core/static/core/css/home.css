@@ -38,6 +38,92 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.18);
 }
 
+/* =========================
+   PROFILE BANNER BUTTON
+   ========================= */
+
+.profile-banner__btn {
+  display: block;
+  margin: 0 auto;
+  appearance: none;
+  border: 1px solid rgba(80, 220, 160, 0.55);
+  background: rgba(24, 60, 44, 0.9);
+  color: #eafff6;
+  font-family: "Cinzel", serif;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    filter 160ms ease;
+}
+
+/* Soft ambient glow layer */
+.profile-banner__btn::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(80, 255, 180, 0.55),
+    transparent 70%
+  );
+
+  opacity: 0;
+  filter: blur(14px);
+  z-index: -1;
+  transition: opacity 160ms ease;
+}
+
+/* Hover: spell hum */
+.profile-banner__btn:hover,
+.profile-banner__btn:focus-visible {
+  transform: translateY(-1px) scale(1.05);
+  filter: brightness(1.15);
+  box-shadow:
+    0 0 14px rgba(80, 255, 180, 0.65),
+    0 0 32px rgba(40, 200, 140, 0.45);
+  outline: none;
+}
+
+/* Activate glow + pulse */
+.profile-banner__btn:hover::before,
+.profile-banner__btn:focus-visible::before {
+  opacity: 1;
+  animation: spell-pulse 1.6s ease-in-out infinite;
+}
+
+/* Pressed state */
+.profile-banner__btn:active {
+  transform: translateY(0) scale(1.02);
+  box-shadow:
+    0 0 10px rgba(80, 255, 180, 0.4);
+}
+
+/* Pulse animation */
+@keyframes spell-pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.45;
+  }
+}
+
 
 /* =====================================================
                      ABOUT US
@@ -47,23 +133,21 @@
   background-image: url("../media/parchment-bk-drop.webp");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;        /* 👈 this is the key */
+  background-size: cover;
   
   padding: 6rem 2rem 5rem;
   margin-bottom: 3rem;
 
   display: flex;
   justify-content: center;
-  align-items: center;           /* centers content nicely */
+  align-items: center;
 }
 
-/* content just controls text width + padding */
 .about-us-content {
   width: min(900px, 92%);
   padding: clamp(2rem, 4vw, 4rem);
 }
 
-/* text styling */
 .about-us-header {
   margin: 0 0 1.25rem;
   text-align: center;
@@ -79,18 +163,257 @@
   color: #2b1a10;
 }
 
+
+/* =========================
+   STREAM SECTION (STONE TABLET THEME)
+   ========================= */
+
+.stream-section {
+  margin: 0;
+  padding: 2rem 0;
+  background: transparent;
+}
+
+.stream-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  padding: 3rem 2.25rem;
+  border-radius: 22px;
+  overflow: hidden;
+  background-image: url("../media/stream-stone-tab.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #e8dcc2;
+}
+
+.stream-wrap > * {
+  position: relative;
+}
+
+/* Head */
+.stream-head {
+  margin-bottom: 1rem;
+}
+
+.stream-title {
+  margin: 0;
+  font-size: 1.7rem;
+  color: #f2e6c9;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+}
+
+.stream-intro {
+  margin: 0.35rem 0 0;
+  color: #e2d4b8;
+}
+
+/* Engraved panels */
+.stream-status,
+.schedule-card {
+  border-radius: 14px;
+  background: rgba(85, 84, 84, 0.575);
+  border: 1px solid rgba(40, 25, 10, 0.25);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.25);
+}
+
+/* Status card */
+.stream-status {
+  margin: 1rem 0 1.25rem;
+  padding: 1rem;
+  background-color: rgb(34, 34, 34);
+}
+
+.stream-status__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stream-status__label {
+  font-weight: 900;
+  color: #f0e3c6;
+}
+
+.stream-status__hint {
+  margin: 0.6rem 0 0;
+  color: #dfd1b2;
+}
+
+.stream-status__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  color: #f6ecd6;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(40, 25, 10, 0.35);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.stream-status__state.is-online .status-dot { background: rgb(0,160,0); }
+.stream-status__state.is-offline .status-dot { background: rgb(200,0,0); }
+
+/* Footer note */
+.schedule-note {
+  margin-top: 0.9rem;
+  color: #dfd1b2;
+  border-radius: 14px;
+  background: rgba(85, 84, 84, 0.575);
+  padding: 5px;
+}
+
+.stream-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-weight: 900;
+  text-decoration: none;
+  color: #f2e6c9;
+}
+
+/* =========================
+   SCHEDULE (MOBILE-FIRST CARDS)
+   ========================= */
+
+.schedule-card {
+  padding: 0.75rem;
+}
+
+/* Hide the head row by default (mobile) */
+.schedule-grid--head {
+  display: none;
+}
+
+/* Each schedule row becomes a card */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  padding: 0.9rem;
+  border-radius: 14px;
+  background: rgba(65, 64, 64, 0.40);
+  border: 1px solid rgba(40, 25, 10, 0.25);
+  margin-bottom: 0.75rem;
+}
+
+/* Cells in card view */
+.schedule-cell {
+  padding: 0;
+  border-bottom: none;
+  color: #e6d8bb;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.schedule-day {
+  font-weight: 900;
+  color: #f2e6c9;
+}
+
+/* Label/value style using ::before so no HTML changes */
+.schedule-grid .schedule-cell:nth-child(1)::before {
+  content: "Day: ";
+  font-weight: 900;
+  color: #f2e6c9;
+}
+
+.schedule-grid .schedule-cell:nth-child(2)::before {
+  content: "Time: ";
+  font-weight: 900;
+  color: #f2e6c9;
+}
+
+.schedule-grid .schedule-cell:nth-child(3)::before {
+  content: "Title: ";
+  font-weight: 900;
+  color: #f2e6c9;
+}
+
+.schedule-grid .schedule-cell:nth-child(4)::before {
+  content: "Desc: ";
+  font-weight: 900;
+  color: #f2e6c9;
+}
+
+.schedule-grid .schedule-cell:nth-child(5)::before {
+  content: "Status: ";
+  font-weight: 900;
+  color: #f2e6c9;
+}
+
+/* Status pills */
+.sched-pill {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  color: #f5ebd3;
+  background: rgba(255,255,255,0.45);
+}
+
+.sched-pill.is-live {
+  border-color: rgba(0, 150, 0, 0.6);
+  background-color: rgba(0, 150, 0, 0.6);
+}
+
+.sched-pill.is-cancelled {
+  border-color: rgba(180, 40, 40, 0.6);
+  background-color: rgba(180, 40, 40, 0.6);
+}
+
+.sched-pill.is-upcoming {
+  border-color: rgba(160, 120, 20, 0.6);
+  background-color: rgba(160, 120, 20, 0.6);
+}
+
+.sched-pill.is-past {
+  border-color: rgb(141, 141, 141);
+  background-color: rgb(141, 141, 141);
+}
+
+.schedule-empty {
+  padding: 1rem;
+  color: #e0d1b2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* =====================================================
      MEDIA QUERRIES
    ===================================================== */
 
-
-
-
-
    /* =====================================================
         MEDIA QUERRIES  768
    ===================================================== */
-@media (max-width: 768px) {
+
+@media (min-width: 768px) {
 
   .home-hero__img {
     object-fit: contain;
@@ -106,13 +429,79 @@
     display: inline-block;
     margin-top: 0.8rem;
   }
+
+  .stream-wrap {
+    /* tablet-optimised stone */
+    background-image: url("../media/stream-stone-tab-for-768.webp");
+    /* slightly wider slab */
+    max-width: 1000px;
+    /* more breathing room for tablet */
+    padding: 4rem 3rem;
+    /* keep stone natural, no stretching */
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+
+  /* =========================
+     SCHEDULE: SWITCH FROM CARDS -> 5 COL GRID
+     ========================= */
+
+  .schedule-card {
+    overflow-x: auto;              /* allow scroll only if truly needed */
+    -webkit-overflow-scrolling: touch;
+    padding: 0;                    /* remove card padding from mobile */
+  }
+
+  /* show header row on tablet */
+  .schedule-grid--head {
+    display: grid;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(65, 64, 64, 0.95);
+  }
+
+  /* rows become true 5-column table */
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: 120px 110px 1fr 1.2fr 110px;
+    min-width: 0;                  /* no forced wide table */
+    gap: 0;                        /* no card gap */
+    padding: 0;                    /* remove card padding */
+    margin: 0;                     /* remove card margin */
+    border: none;                  /* remove card border */
+    border-radius: 0;              /* remove card rounding */
+    background: transparent;       /* let schedule-card be the panel */
+  }
+
+  /* cells return to table style */
+  .schedule-cell {
+    padding: 0.85rem 0.85rem;
+    border-bottom: 1px solid rgba(40, 25, 10, 0.25);
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  /* remove mobile "Day: Time:" labels */
+  .schedule-grid .schedule-cell::before {
+    content: "";
+  }
+
+  /* center status column */
+  .schedule-cell:last-child {
+    text-align: center;
+  }
+
+  .schedule-cell--head {
+    background-color: rgb(34, 34, 34);
+    z-index: 10px;
+  }
 }
 
-
- /* =====================================================
-           MEDIA QUERRIES  1024
- ===================================================== */
-
+/* =====================================================
+   MEDIA QUERY — 1024px and up
+   ===================================================== */
 @media (min-width: 1024px) {
 
   .home-hero__img {
@@ -121,14 +510,9 @@
     object-fit: contain;
   }
 
-  /* 👇 pull parchment section upward */
   .about-us {
-    padding-top: 1.0rem;
+    padding-top: 1rem;
     padding-bottom: 5rem;
-  }
-
-  /* keep parchment fully visible */
-  .about-us {
     background-size: contain;
     background-position: center;
   }
@@ -145,22 +529,59 @@
     display: inline-block;
     margin-top: 1rem;
   }
-}
 
+  /* Stream tablet */
+  .stream-wrap {
+    width: min(96vw, 1200px);
+    /* keep tablet fully visible */
+    background-image: url("../media/stream-stone-tab-for-768.webp");
+    background-size: contain;
+    background-position: center top;
+    background-repeat: no-repeat;
+    /* stop masking edges */
+    border-radius: 0;
+    overflow: visible;
+    /* spacing */
+    padding: 4rem 3.5rem 5rem;
+    /* IMPORTANT: do NOT force aspect-ratio here */
+    aspect-ratio: auto;
+    min-height: unset;
+    height: auto;
+  }
+
+  /* Keep content inside by scrolling schedule */
+  .schedule-card {
+    max-height: 520px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* 5-column sizing at 1024+ */
+  .schedule-grid {
+    grid-template-columns: 140px 120px 1fr 1.3fr 120px;
+    min-width: 0;
+  }
+
+  .schedule-grid .schedule-cell:last-child {
+    text-align: right;
+  }
+
+  .schedule-cell--head {
+    background-color: rgb(34, 34, 34);
+    z-index: 10px;
+  }
+}
 
 /* =====================================================
    MEDIA QUERY — 1440px and up
    ===================================================== */
 @media (min-width: 1440px) {
 
-  .home-hero__img {
-    max-height: 360px;
-  }
+  .home-hero__img { max-height: 360px; }
 
   .about-us {
     padding-top: 4rem;
     padding-bottom: 4rem;
-
     background-repeat: no-repeat;
     background-position: top center;
     background-size: 100% auto;
@@ -170,36 +591,173 @@
   .about-us-content {
     max-width: 1400px;
     margin: 0 auto;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     font-size: 26px;
   }
+
+  .stream-wrap {
+    width: min(92vw, 1280px);
+
+    background-image: url("../media/stream-stone-tab-for-1440.webp");
+    background-size: contain;          /* NO CROP */
+    background-repeat: no-repeat;
+    background-position: center top;
+
+    border-radius: 0;
+    overflow: visible;
+
+    padding: 4.5rem 4rem 8.5rem;
+  }
+
+  .schedule-card {
+    max-height: 520px;   /* key change */
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .schedule-grid {
+    grid-template-columns: 160px 130px 1fr 1.4fr 130px;
+  }
 }
 
+
+
 /* =====================================================
-   MEDIA QUERY — 2560px and up (FULL-WIDTH BACKGROUND)
+   MEDIA QUERY — 2560px and up (TRUE 4K SCALE)
    ===================================================== */
 @media (min-width: 2560px) {
 
-  .about-us {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-
-    /* 👇 full width, never crop */
+  /* =========================
+     BIG TABLET (NO SMALL CAP)
+     ========================= */
+  .stream-wrap{
+    /* IMPORTANT: kill the base cap */
+    max-width: none;
+    /* make it fill the screen more */
+    width: min(96vw, 4200px);
+    margin: 0 auto;
+    background-image: url("../media/stream-stone-tab-4k.webp");
     background-repeat: no-repeat;
-    background-position: top center;
-    background-size: 100% auto;
-    min-height: calc(100vw / 1.4);
+    background-size: contain;
+    background-position: center top;
+    border-radius: 0;
+    overflow: visible;
+    /* more internal space so content sits nicely */
+    padding: 6.5rem 6rem 12.5rem;
+    /* don’t force weird shrinking */
+    height: auto;
+    min-height: 0;
   }
 
-  .about-us-content {
-    max-width: 1600px;
-    font-size: 32px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  /* Keep content centred on the tablet */
+  .stream-head,
+  .stream-status,
+  .schedule-note,
+  .schedule-card{
+    max-width: 1600px;   /* keeps it inside the stone */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* =========================
+     SCHEDULE: FORCE TABLE MODE
+     ========================= */
+
+  /* show header row */
+  .schedule-grid--head{
+    display: grid;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(65, 64, 64, 0.95);
+  }
+
+  /* schedule container */
+  .schedule-card{
+    padding: 0;
+    max-height: 1050px;
+    overflow-y: auto;
+
+    /* KEY: if anything still gets tight, allow sideways instead of cutting pills */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* rows become true 5-column table (not cards) */
+  .schedule-grid{
+    display: grid;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+
+    /* 5 cols, tuned for 4K readability */
+    grid-template-columns:
+      220px   /* Day */
+      210px   /* Time */
+      320px   /* Title */
+      1fr     /* Description */
+      220px;  /* Status */
+
+    /* ensures the grid doesn’t collapse into nonsense */
+    min-width: 1350px;
+  }
+
+  .schedule-cell{
+    padding: 1.15rem 1.15rem;
+    border-bottom: 1px solid rgba(40, 25, 10, 0.25);
+    white-space: normal;
+    word-break: break-word;
+    font-size: 2.025rem;
+    line-height: 1.45;
+  }
+
+  /* remove mobile label prefixes */
+  .schedule-grid .schedule-cell::before{
+    content: "";
+  }
+
+  /* status column tidy */
+  .schedule-grid .schedule-cell:last-child{
+    text-align: right;
+    padding-right: 1.6rem;
+  }
+
+  /* =========================
+     FONT SCALE (4K)
+     ========================= */
+  .stream-title{ font-size: 3.2rem; }
+  .stream-intro{ font-size: 1.6rem; line-height: 1.85; }
+
+  .stream-status__label{ font-size: 2.1rem; }
+
+  .stream-status__hint{
+    font-size: 1.8rem;
+    line-height: 1.75;
+  }
+
+  .stream-status__state{
+    font-size: 1.6rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .status-dot{
+    width: 14px;
+    height: 14px;
+  }
+
+  .schedule-note{ font-size: 1.35rem; line-height: 1.75; }
+
+  .sched-pill{
+    font-size: 1.725rem;  /* was 1.15rem */
+    padding: 0.975rem 1.8rem; /* was 0.65rem 1.2rem */
+  }
+
+  .schedule-cell--head{
+    font-size: 2.025rem;
   }
 }

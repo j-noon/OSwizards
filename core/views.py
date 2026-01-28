@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Profile
+from stream.context import get_stream_section_context
 
 
 def home(request):
@@ -19,13 +20,15 @@ def home(request):
             profile.avatar,
         ])
 
-    return render(
-        request,
-        "core/home.html",
-        {
-            "show_profile_banner": show_profile_banner,
-        },
-    )
+    # ✅ Build your normal context
+    context = {
+        "show_profile_banner": show_profile_banner,
+    }
+
+    # ✅ Merge in stream app context (twitch_live, schedule_rows, etc.)
+    context.update(get_stream_section_context())
+
+    return render(request, "core/home.html", context)
 
 
 def login_page(request):
