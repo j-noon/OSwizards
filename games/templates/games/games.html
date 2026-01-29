@@ -1,8 +1,113 @@
 {% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'games/game.css' %}">
+{% endblock %}
 
 {% block title %}Games | OS Wizards{% endblock %}
 
 {% block content %}
-  <h1>Games</h1>
-  <p>Games page placeholder.</p>
+<section class="games-page">
+
+  <header class="games-header">
+    <h1 class="games-title">Get caught up</h1>
+    <p class="games-intro">Weekly recaps added by the DM after each session/stream.</p>
+  </header>
+ 
+
+  <section class="games-section">
+
+    <!-- Title OUTSIDE the image -->
+    <h2 class="games-section-title">D&amp;D campaigns so far</h2>
+
+    <!-- Image-backed content starts here -->
+    <div class="parchment-wrap">
+      <img
+        class="parchment-bg"
+        src="{% static 'core/media/dnd-map.webp' %}"
+        alt=""
+        aria-hidden="true"
+      >
+
+      <div class="parchment-content">
+        {% if campaigns %}
+          {% for series in campaigns %}
+            <article class="series-card">
+              <h3 class="series-title">
+                {{ series.title }}
+                {% if series.system %}
+                  <span class="series-system">({{ series.system }})</span>
+                {% endif %}
+              </h3>
+
+              {% if series.description %}
+                <p class="series-description">{{ series.description }}</p>
+              {% endif %}
+
+              <div class="episodes">
+                {% for ep in series.episodes.all %}
+                  {% if ep.is_published %}
+                    <div class="episode">
+                      <h4 class="episode-title">
+                        Episode {{ ep.episode_number }}{% if ep.title %}: {{ ep.title }}{% endif %}
+                      </h4>
+                      <p class="episode-recap">{{ ep.recap|linebreaksbr }}</p>
+                    </div>
+                  {% endif %}
+                {% empty %}
+                  <p class="empty">No recaps yet — check back after the next session.</p>
+                {% endfor %}
+              </div>
+            </article>
+          {% endfor %}
+        {% else %}
+          <p class="empty">No campaigns added yet.</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </section>
+
+  <section class="games-section">
+    <h2 class="games-section-title">One shots</h2>
+
+    {% if one_shots %}
+      {% for series in one_shots %}
+        <article class="series-card">
+          <h3 class="series-title">
+            {{ series.title }}
+            {% if series.system %}<span class="series-system">({{ series.system }})</span>{% endif %}
+          </h3>
+
+          {% if series.description %}
+            <p class="series-description">{{ series.description }}</p>
+          {% endif %}
+
+          <div class="episodes">
+            {% with eps=series.episodes.all %}
+              {% if eps %}
+                {% for ep in eps %}
+                  {% if ep.is_published %}
+                    <div class="episode">
+                      <h4 class="episode-title">
+                        Episode {{ ep.episode_number }}{% if ep.title %}: {{ ep.title }}{% endif %}
+                      </h4>
+                      <p class="episode-recap">{{ ep.recap|linebreaksbr }}</p>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <p class="empty">No recaps yet.</p>
+              {% endif %}
+            {% endwith %}
+          </div>
+        </article>
+      {% endfor %}
+    {% else %}
+      <p class="empty">No one-shots added yet.</p>
+    {% endif %}
+  </section>
+
+</section>
 {% endblock %}

@@ -1,0 +1,159 @@
+/* ==========================
+====== DND CAMPAIGN ========
+============================= */
+
+/* ===== Page layout ===== */
+.games-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ===== Top header ===== */
+.games-header {
+  margin-top: -20px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.games-title {
+  font-size: 2.0rem;
+  font-weight: 800;
+  background: #2b2b2b;
+  color: #d2b48c;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.games-intro {
+  color: white;
+  opacity: 1;          /* ✅ was 0.9 */
+  font-size: 1.05rem;
+}
+
+/* ===== Section headers ===== */
+.games-section {
+  margin-top: 48px;
+}
+
+.games-section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: #2b2b2b;
+  color: #d2b48c;
+  padding: 14px;
+  margin-bottom: -5px;
+  display: inline-block;
+  width: 100%;
+}
+
+/* ===== Series cards ===== */
+.series-card {
+  margin-bottom: 32px;
+}
+
+.series-title {
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: #2b2b2bb7;   /* ✅ translucent like others */
+  border: 1px solid rgba(210, 180, 140, 0.35);
+  color: #f5d4a8;
+  padding: 10px 16px;               /* thinner */
+  border-radius: 12px;
+  margin-bottom: 12px;
+  text-align: center;
+  max-width: 90%;
+}
+
+.series-system {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.series-description {
+  display: block;
+  background: #2b2b2bb7; /* box transparency stays here */
+  border: 1px solid rgba(210, 180, 140, 0.25);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin: 12px auto 18px;
+  color: #f5d4a8;
+  opacity: 1;           /* ✅ was 0.95 (remove fade on text) */
+  text-align: center;
+  width: fit-content;
+  max-width: 90%;
+}
+
+/* ===== Episodes ===== */
+.episodes {
+  margin-top: 16px;
+}
+
+.episode {
+  display: inline-block;
+  background: #2b2b2bb7;   /* slightly lighter */
+  border: 1px solid rgba(210, 180, 140, 0.30);
+  border-radius: 12px;
+  padding: 14px 18px;               /* thinner */
+  margin: 14px auto;
+  text-align: center;
+  max-width: 90%;
+}
+
+.episode-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #d2b48c;
+  margin-bottom: 10px;
+}
+
+/* ===== Recap text ===== */
+.episode-recap {
+  color: #f5d4a8;
+  line-height: 1.6;
+  opacity: 1;           /* ✅ was 0.95 */
+}
+
+/* ===== Empty states ===== */
+.empty {
+  color: #f5d4a8;
+  opacity: 0.7;
+  font-style: italic;
+  margin-top: 12px;
+}
+
+/* ===== Parchment section wrapper ===== */
+.parchment-wrap {
+  position: relative;
+  overflow: hidden;          /* keeps image corners neat */
+  border-radius: 18px;       /* optional */
+  padding: 26px 16px;        /* space inside the parchment */
+  margin-top: 20px;
+}
+
+/* The "background image" layer (actually an <img>) */
+.parchment-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  object-fit: fill;   /* or fill if you prefer no cropping */
+  z-index: 0;
+
+  opacity: 1;          /* ✅ was 0.35 */
+  pointer-events: none;
+}
+
+/* Everything else sits above the image */
+.parchment-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================
+======== ONE SHOT ============
+============================= */
+
+

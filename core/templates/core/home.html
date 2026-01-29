@@ -31,6 +31,13 @@
 {% endif %}
 
 <section class="about-us">
+  <img
+    class="about-us-bg"
+    src="{% static 'core/media/parchment-bk-drop.webp' %}"
+    alt=""
+    aria-hidden="true"
+  />
+
   <div class="about-us-content">
     <h1 class="about-us-header">Welcome to OS Wizards</h1>
     <p class="about-us-para">
@@ -50,99 +57,114 @@
 --------------------------->
 
 {% load tz %}
+
 <section class="stream-section">
   <div class="stream-wrap">
 
-    <header class="stream-head">
-      <h2 class="stream-title">Stream</h2>
-      <p class="stream-intro">
-        Welcome to the stream section. Here you’ll find the schedule for upcoming games.
-      </p>
-    </header>
+    <!-- Tablet image -->
+    <img
+      class="stream-bg"
+      src="{% static 'core/media/stone-tab-enhanced.webp' %}"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+    >
 
-    <!-- Status card -->
-    <aside class="stream-status" aria-label="Streamer status">
-      <div class="stream-status__top">
-        <span class="stream-status__label">DM Status</span>
+    <!-- NEW: content wrapper (everything goes inside this) -->
+    <div class="stream-content">
 
-        {% if twitch_live %}
-          <span class="stream-status__state is-online" aria-live="polite">
-            <span class="status-dot" aria-hidden="true"></span>
-            Online
-          </span>
-        {% else %}
-          <span class="stream-status__state is-offline" aria-live="polite">
-            <span class="status-dot" aria-hidden="true"></span>
-            Offline
-          </span>
-        {% endif %}
-      </div>
+      <header class="stream-head">
+        <h2 class="stream-title">Stream</h2>
+        <p class="stream-intro">
+          Welcome to the stream section. Here you’ll find the schedule for upcoming games.
+        </p>
+      </header>
 
-      <p class="stream-status__hint">
-        Live status updates     
-        <a class="stream-link" href="https://www.twitch.tv/{{ twitch_channel_login }}" target="_blank" rel="noopener">
-          Visit OSwizards Twitch Channel
-        </a>.
-      </p>
-    </aside>
+      <aside class="stream-status" aria-label="Streamer status">
+        <div class="stream-status__top">
+          <span class="stream-status__label">DM Status</span>
 
-    <p class="schedule-note">
-      Set your timezone in your profile to see corrected times for your location.
-      If you don’t, all times above are shown in <strong>GMT+00 (London, UK)</strong>.
-    </p>
-
-    <!-- Schedule -->
-    <div class="schedule-card" aria-label="Rolling 7-day schedule">
-      <div class="schedule-grid schedule-grid--head" role="row">
-        <div class="schedule-cell schedule-cell--head">Day</div>
-        <div class="schedule-cell schedule-cell--head">Time</div>
-        <div class="schedule-cell schedule-cell--head">Title</div>
-        <div class="schedule-cell schedule-cell--head">Description</div>
-        <div class="schedule-cell schedule-cell--head">Status</div>
-      </div>
-
-      {% for row in schedule_rows %}
-        <div class="schedule-grid" role="row" data-item-id="{{ row.item.id }}">
-          <div class="schedule-cell schedule-day">
-            {{ row.item.start_at|date:"D j M" }}
-          </div>
-
-          <div class="schedule-cell schedule-slot">
-            {{ row.item.start_at|date:"H:i" }}–{{ row.item.end_at|date:"H:i" }}
-          </div>
-
-          <div class="schedule-cell schedule-slot">
-            {{ row.item.title }}
-          </div>
-
-          <div class="schedule-cell schedule-slot">
-            {% if row.item.description %}
-              {{ row.item.description }}
-            {% else %}
-              —
-            {% endif %}
-          </div>
-
-          <div class="schedule-cell schedule-slot">
-            <span class="js-sched-status">
-              {% if row.status == "live" %}
-                <span class="sched-pill is-live">LIVE NOW</span>
-              {% elif row.status == "cancelled" %}
-                <span class="sched-pill is-cancelled">CANCELLED</span>
-              {% elif row.status == "past" %}
-                <span class="sched-pill is-past">PAST</span>
-              {% else %}
-                <span class="sched-pill is-upcoming">UPCOMING</span>
-              {% endif %}
+          {% if twitch_live %}
+            <span class="stream-status__state is-online" aria-live="polite">
+              <span class="status-dot" aria-hidden="true"></span>
+              Online
             </span>
+          {% else %}
+            <span class="stream-status__state is-offline" aria-live="polite">
+              <span class="status-dot" aria-hidden="true"></span>
+              Offline
+            </span>
+          {% endif %}
+        </div>
+
+        <p class="stream-status__hint">
+          Live status updates
+          <a class="stream-link" href="https://www.twitch.tv/{{ twitch_channel_login }}" target="_blank" rel="noopener">
+            Visit OSwizards Twitch Channel
+          </a>.
+        </p>
+      </aside>
+
+      <p class="schedule-note">
+        Set your timezone in your profile to see corrected times for your location.
+        If you don’t, all times above are shown in <strong>GMT+00 (London, UK)</strong>.
+      </p>
+
+      <div class="schedule-card" aria-label="Rolling 7-day schedule">
+        <div class="schedule-grid schedule-grid--head" role="row">
+          <div class="schedule-cell schedule-cell--head">Day</div>
+          <div class="schedule-cell schedule-cell--head">Time</div>
+          <div class="schedule-cell schedule-cell--head">Title</div>
+          <div class="schedule-cell schedule-cell--head">Description</div>
+          <div class="schedule-cell schedule-cell--head">Status</div>
+        </div>
+
+        <div class="schedule-body">
+        {% for row in schedule_rows %}
+          <div class="schedule-grid" role="row" data-item-id="{{ row.item.id }}">
+            <div class="schedule-cell schedule-day">
+              {{ row.item.start_at|date:"D j M" }}
+            </div>
+
+            <div class="schedule-cell schedule-slot">
+              {{ row.item.start_at|date:"H:i" }}–{{ row.item.end_at|date:"H:i" }}
+            </div>
+
+            <div class="schedule-cell schedule-slot">
+              {{ row.item.title }}
+            </div>
+
+            <div class="schedule-cell schedule-slot">
+              {% if row.item.description %}
+                {{ row.item.description }}
+              {% else %}
+                —
+              {% endif %}
+            </div>
+
+            <div class="schedule-cell schedule-slot">
+              <span class="js-sched-status">
+                {% if row.status == "live" %}
+                  <span class="sched-pill is-live">LIVE NOW</span>
+                {% elif row.status == "cancelled" %}
+                  <span class="sched-pill is-cancelled">CANCELLED</span>
+                {% elif row.status == "past" %}
+                  <span class="sched-pill is-past">PAST</span>
+                {% else %}
+                  <span class="sched-pill is-upcoming">UPCOMING</span>
+                {% endif %}
+              </span>
+            </div>
           </div>
+        {% empty %}
+          <div class="schedule-empty">
+            No scheduled streams in the next 7 days.
+          </div>
+        {% endfor %}
         </div>
-      {% empty %}
-        <div class="schedule-empty">
-          No scheduled streams in the next 7 days.
-        </div>
-      {% endfor %}
-    </div>
+      </div>
+
+    </div><!-- /.stream-content -->
 
   </div>
 </section>

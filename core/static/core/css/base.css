@@ -3,13 +3,18 @@
    ========================================================= */
 * { box-sizing: border-box; }
 
-html, body { height: 100%; }
+html, body {   
+  width: 100%;
+  overflow-x: hidden;
+  height: 100%; 
+}
 
 body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   line-height: 1.5;
   background-color: rgba(112, 62, 5, 0.658);
+
 }
 
 .brand, h1, h2, h3 {
@@ -35,6 +40,15 @@ p {
   --ink: #1c120b;
   --shadow: rgba(0,0,0,.18);
 
+  --logo-nudge-x: -12px;
+  --profile-nudge-x: -16px;
+  --profile-nudge-y: -25px;
+
+  --nav-nudge-x: -20px;
+  --nav-nudge-y: 20px;
+  --nav-panel-nudge-y: 10px;
+   /* + = down, - = up */   /* move dropdown DOWN with positive */
+
   /* Lightning tuning */
   --zap-brightness: 1.25;
   --zap-contrast: 2.35;
@@ -43,79 +57,91 @@ p {
 }
 
 /* =========================================================
-   HEADER + BRAND (MOBILE-FIRST)
+   HEADER + BRAND (MOBILE-FIRST, CLEAN LAYOUT)
    ========================================================= */
+
 .site-header {
   position: relative;
   border-bottom: 1px solid rgba(0,0,0,.10);
-  padding: 5px 0 10px;
   background-color: rgba(240, 132, 9, 0.45);
+  padding: 10px 0 14px;
 }
 
+/* Make containers real containers (header only) */
+.site-header .container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+/* Header inner stack: title then row */
 .header-inner {
+  display: grid;
+  gap: 10px;
+  text-align: center;
   padding-top: 2px;
-  padding-left: 85px;
-  text-align: left;
 }
 
+/* Title */
 .brand {
+  display: block;
+  margin: 0;
   text-decoration: none;
   color: var(--ink);
+  font-family: Cinzel, serif;
   font-weight: 900;
   letter-spacing: 0.5px;
   font-size: 30px;
   line-height: 1.05;
   text-transform: uppercase;
-  display: block;
   white-space: nowrap;
 }
 
-/* =========================================================
-   HEADER LOGO + PROFILE ROW
-   ========================================================= */
-
-.header-row {
-  display: flex;
+/* Row: logo centered, profile button right */
+.header-row{
+  display: grid;
+  grid-template-columns: 120px 1fr 120px; /* left space = right button width */
   align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-  /* SAFE GUTTERS so nothing clips */
-  padding-left: 12px;
-  padding-right: 16px;
+  gap: 10px;
+  padding: 0 6px;
 }
 
-/* centered logo */
-.site-logo {
+/* Logo sits in the "1fr" space and is centered */
+.site-logo{
   height: 72px;
   width: auto;
-  margin: 0 auto;
   display: block;
+  justify-self: center;
+  margin: 0;
+  grid-column: 2;
+  transform: translateX(var(--logo-nudge-x));
 }
 
 /* =========================================================
-   PROFILE BUTTON — PARCHMENT STYLE
+   PROFILE BUTTON — PARCHMENT STYLE (NO LAYOUT TRANSFORMS)
    ========================================================= */
 
-.profile-btn {
+.profile-btn{
   appearance: none;
   border: 0;
   background: transparent;
   padding: 0;
   cursor: pointer;
   white-space: nowrap;
-
-  --x: 0px;
-  --y: -25px;
-  transform: translate(var(--x), var(--y));
-  transition: transform 160ms ease, filter 160ms ease;
-  flex: 0 0 auto;
+  justify-self: end;
+  grid-column: 3;
+  transform: translate(
+    var(--profile-nudge-x, 0px),
+    var(--profile-nudge-y)
+  );
 }
 
+/* parchment image button */
 .profile-btn--parchment {
   width: 120px;
   height: 30px;
   display: inline-grid;
   place-items: center;
+
   background-image: var(--profile-btn-bg);
   background-repeat: no-repeat;
   background-position: center;
@@ -131,20 +157,22 @@ p {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #1c120b;
-  text-decoration: none;
   text-shadow: 0 1px 0 rgba(255,255,255,0.35);
   pointer-events: none;
 }
 
-/* Hover (logged in only) */
+/* Hover/focus: visual lift only (safe) */
 .profile-btn--parchment:hover,
 .profile-btn--parchment:focus-visible {
-  transform: translate(var(--x), calc(var(--y) - 2px)) scale(1.04);
+  transform: translate(
+    var(--profile-nudge-x, 0px),
+    var(--profile-nudge-y)
+  ) scale(1.04);
   filter: drop-shadow(0 12px 22px rgba(0,0,0,0.45));
   outline: none;
 }
 
-/* Disabled (logged out) */
+/* Disabled state */
 .profile-btn--disabled {
   cursor: not-allowed;
   opacity: 0.55;
@@ -153,17 +181,20 @@ p {
 
 .profile-btn--disabled:hover,
 .profile-btn--disabled:focus-visible {
-  transform: translate(var(--x), var(--y));
+    transform: translate(
+    var(--profile-nudge-x, 0px),
+    var(--profile-nudge-y)
+  );
   filter: grayscale(1) drop-shadow(0 6px 12px rgba(0,0,0,0.25));
 }
 
 /* =========================================================
    NAV WRAP (TOP-LEFT)
    ========================================================= */
-.nav-wrap {
+.nav-wrap{
   position: absolute;
-  top: 10px;
-  left: -20px;
+  top:  calc(10px + var(--nav-nudge-y));
+  left: calc(10px + var(--nav-nudge-x));
   z-index: 50;
 }
 
@@ -227,8 +258,8 @@ p {
   top: calc(100% - 80px);
   left: 20px; 
   z-index: 60;
-  width: max-content;
-  max-width: 88vw;
+  min-width: 100px;
+  max-width: 200px;
   background: var(--scroll-bg) center / 100% 100% no-repeat;
   padding: 44px 26px 36px;
   border: none;
@@ -864,52 +895,43 @@ p {
 /* =========================================================
    MEDIA QURRIES (>= 375px)
    ========================================================= */
-@media (min-width: 375px) and (max-width: 424px) {
+@media (min-width: 375px) {
+
+  /* Scroll: keep height, nudge LEFT slightly */
+  .nav-wrap {
+    --nav-nudge-y: -12px;   /* unchanged */
+    --nav-nudge-x: -28px;   /* was -20px → slightly more left */
+  }
+
+  /* My Profile: push RIGHT significantly */
   .profile-btn {
-    --x: 10px;
-    --y: -35px;
+    --profile-nudge-y: -62px; /* unchanged */
+    --profile-nudge-x: 33px;  /* positive = move right */
   }
 }
 
 /* =========================================================
    MEDIA QURRIES (>= 425px)
    ========================================================= */
-@media (min-width: 425px) and (max-width: 767px) {
-  .profile-btn {
-    --x: 10px;
-    --y: -60px;
-  }
-}
+
 
 
 /* =========================================================
-   DESKTOP OVERRIDES (>= 768px)
+      MEDIA   768
    ========================================================= */
 @media (min-width: 768px) {
-  .header-inner {
-    padding-left: 0;
-    text-align: center;
+
+  /* Move NAV scroll button up */
+  .nav-wrap {
+    --nav-nudge-y: -6px;   /* negative = move up */
   }
 
-  .brand {
-    font-size: 42px;
-    white-space: normal;
+  /* Move My Profile button up */
+  .profile-btn {
+    --profile-nudge-y: -58px;  /* tweak this number to taste */
   }
 
-  .nav-scroll {
-    max-width: 420px;
-  }
-    .profile-btn {
-    --x: -30px;
-    --y: -70px; /* tweak: -16 to -28 */
-  }
-    .footer-social {
-    flex-direction: row;         /* 👈 inline again */
-    align-items: center;
-    gap: 14px;
-  }
 }
-
 /* =========================================================
    ULTRAWIDE (>= 1024px)
    ========================================================= */
@@ -918,6 +940,13 @@ p {
     --x: -50px;
     --y: -70px;
   }
+
+  .site-header {
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,.10);
+    padding: 5px 0 10px;
+    background-color: rgba(240, 132, 9, 0.45);
+  }
 }
 
 
@@ -925,20 +954,26 @@ p {
    ULTRAWIDE (>= 1440px)
    ========================================================= */
 @media (min-width: 1440px) {
+
+  /* Wider header container (you already had this right) */
   .site-header .container {
-    width: min(1400px, 96%);  /* wider header content */
+    width: min(1400px, 96%);
   }
 
+  /* Ensure title is visually centered */
+  .brand {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Move My Profile button LEFT */
+  .profile-btn {
+    --profile-nudge-x: -36px; /* tweak if needed */
+  }
+
+  /* Keep header row tidy */
   .header-row {
     padding-right: 0;
   }
-
-  .profile-btn {
-    --x: -80px;
-    --y: -70px;
-  }
-
-  .brand {
-    margin-left: -100px;
-}
 }

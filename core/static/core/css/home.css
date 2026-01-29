@@ -9,6 +9,7 @@
 .home-hero {
   margin-top: -1.3rem;
   margin-bottom: 2.5rem;
+  background-color: #242428;
 }
 
 .home-hero__img {
@@ -18,6 +19,7 @@
   background-color: #242428;
   object-position: center;
   display: block;
+  padding-left: 50px;
 }
 
 
@@ -130,11 +132,8 @@
    ===================================================== */
 
 .about-us {
-  background-image: url("../media/parchment-bk-drop.webp");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  
+  position: relative;            /* allows absolute bg img */
+  overflow: hidden;              /* keeps edges neat */
   padding: 6rem 2rem 5rem;
   margin-bottom: 3rem;
 
@@ -143,11 +142,27 @@
   align-items: center;
 }
 
+/* The image layer */
+.about-us-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;             /* fills section */
+  z-index: 0;
+  pointer-events: none;
+  object-fit: cover;
+}
+
+/* Content sits above the image */
 .about-us-content {
+  position: relative;
+  z-index: 1;
+
   width: min(900px, 92%);
   padding: clamp(2rem, 4vw, 4rem);
 }
 
+/* text styles unchanged */
 .about-us-header {
   margin: 0 0 1.25rem;
   text-align: center;
@@ -163,7 +178,6 @@
   color: #2b1a10;
 }
 
-
 /* =========================
    STREAM SECTION (STONE TABLET THEME)
    ========================= */
@@ -178,18 +192,44 @@
   max-width: 1100px;
   margin: 0 auto;
   position: relative;
-  padding: 3rem 2.25rem;
-  border-radius: 22px;
   overflow: hidden;
-  background-image: url("../media/stream-stone-tab.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  border-radius: 22px;
+
+  /* IMPORTANT: give the tablet space to exist behind content */
+  padding: 3rem 1.25rem;
+
   color: #e8dcc2;
 }
 
-.stream-wrap > * {
+/* Tablet image sits BEHIND content */
+.stream-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* fills the full content height */
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Everything else sits ABOVE the tablet */
+.stream-content {
   position: relative;
+  z-index: 1;
+
+  /* keeps content on the tablet face */
+  width: min(650px, 92%);
+  margin: 0 auto;
+
+  /* optional: helps pull content up onto tablet a bit */
+  padding-top: 1.25rem;
+}
+
+/* Keep content above the image */
+.stream-wrap > *:not(.stream-bg) {
+  position: relative;
+  z-index: 1;
 }
 
 /* Head */
@@ -207,6 +247,9 @@
 .stream-intro {
   margin: 0.35rem 0 0;
   color: #e2d4b8;
+  background: rgba(85, 84, 84, 0.637);
+  border-radius: 8px;
+  padding: 5px;
 }
 
 /* Engraved panels */
@@ -270,7 +313,7 @@
   margin-top: 0.9rem;
   color: #dfd1b2;
   border-radius: 14px;
-  background: rgba(85, 84, 84, 0.575);
+  background: rgba(85, 84, 84, 0.637);
   padding: 5px;
 }
 
@@ -409,15 +452,21 @@
      MEDIA QUERRIES
    ===================================================== */
 
-   /* =====================================================
-        MEDIA QUERRIES  768
+      /* =====================================================
+        MEDIA QUERRIES  375
    ===================================================== */
 
+
+/* =====================================================
+   MEDIA QUERY — 768px and up (STREAM: BIGGER TABLET + SMALLER SCHEDULE)
+   ===================================================== */
 @media (min-width: 768px) {
 
   .home-hero__img {
     object-fit: contain;
     max-height: none;
+    margin-left: 20px;
+    padding-left: 90px;
   }
 
   .about-us-header {
@@ -430,86 +479,146 @@
     margin-top: 0.8rem;
   }
 
+  /* =========================
+     STREAM TABLET (BIGGER + WIDER)
+     ========================= */
+
   .stream-wrap {
-    /* tablet-optimised stone */
-    background-image: url("../media/stream-stone-tab-for-768.webp");
-    /* slightly wider slab */
-    max-width: 1000px;
-    /* more breathing room for tablet */
-    padding: 4rem 3rem;
-    /* keep stone natural, no stretching */
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
+    max-width: 1500px;      /* ✅ wider tablet */
+    min-height: 1050px;     /* ✅ taller tablet */
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+  }
+
+  .stream-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;    /* ✅ no crop */
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Keep header/status/note STATIC (no scrolling here) */
+  .stream-content {
+    position: relative;
+    z-index: 1;
+    width: min(1200px, qO); /* ✅ more room inside the tablet */
+    margin: 0 auto;
+    padding: 5.5rem 3.5rem 3rem;
+    max-height: none;
+    overflow: visible;
   }
 
   /* =========================
-     SCHEDULE: SWITCH FROM CARDS -> 5 COL GRID
+     SCHEDULE (SHORTER + THINNER + SCROLL BODY)
      ========================= */
 
   .schedule-card {
-    overflow-x: auto;              /* allow scroll only if truly needed */
-    -webkit-overflow-scrolling: touch;
-    padding: 0;                    /* remove card padding from mobile */
+    padding: 0;
+    overflow: hidden;                 /* keep it tidy */
+    transform: scale(0.95);           /* ✅ thinner */
+    transform-origin: top center;
+    margin-top: 0.25rem;
   }
 
-  /* show header row on tablet */
+  /* ✅ Only schedule rows scroll */
+  .schedule-body {
+    max-height: 420px;                /* ✅ shorter (shows ~4-5 entries) */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ✅ Header row fixed */
   .schedule-grid--head {
     display: grid;
     position: sticky;
     top: 0;
-    z-index: 2;
-    background: rgba(65, 64, 64, 0.95);
+    z-index: 5;
+    background: rgba(34, 34, 34, 0.98);
   }
 
-  /* rows become true 5-column table */
+  /* 5-column table layout */
   .schedule-grid {
     display: grid;
     grid-template-columns: 120px 110px 1fr 1.2fr 110px;
-    min-width: 0;                  /* no forced wide table */
-    gap: 0;                        /* no card gap */
-    padding: 0;                    /* remove card padding */
-    margin: 0;                     /* remove card margin */
-    border: none;                  /* remove card border */
-    border-radius: 0;              /* remove card rounding */
-    background: transparent;       /* let schedule-card be the panel */
+    min-width: 0;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
   }
 
-  /* cells return to table style */
+  /* Slightly smaller text + less padding so it fits better */
   .schedule-cell {
-    padding: 0.85rem 0.85rem;
+    padding: 0.7rem 0.75rem;          /* ✅ tighter rows */
+    font-size: 0.95rem;               /* ✅ slightly smaller */
     border-bottom: 1px solid rgba(40, 25, 10, 0.25);
     white-space: normal;
     word-break: break-word;
   }
 
-  /* remove mobile "Day: Time:" labels */
+  /* remove mobile label prefixes */
   .schedule-grid .schedule-cell::before {
     content: "";
   }
 
-  /* center status column */
   .schedule-cell:last-child {
     text-align: center;
   }
 
   .schedule-cell--head {
     background-color: rgb(34, 34, 34);
-    z-index: 10px;
+    z-index: 10;
+    font-size: 0.95rem;
+  }
+
+  /* Pills slightly smaller so status column stays clean */
+  .sched-pill {
+    font-size: 0.82rem;
+    padding: 0.3rem 0.55rem;
+  }
+
+  .schedule-note {
+    transform: scale(0.95);
+    transform-origin: top center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .stream-status,
+  .schedule-note {
+    transform: scale(0.95);
+    transform-origin: top center;
   }
 }
 
 /* =====================================================
-   MEDIA QUERY — 1024px and up
+   MEDIA QUERY — 1024px and up (STREAM: BIGGER TABLET + SMALLER SCHEDULE)
    ===================================================== */
 @media (min-width: 1024px) {
 
+  /* ------------------------------
+     HERO
+  -------------------------------- */
   .home-hero__img {
     max-height: 380px;
     width: 100%;
     object-fit: contain;
+    margin-left: 25px;
   }
 
+  /* ------------------------------
+     ABOUT US
+  -------------------------------- */
   .about-us {
     padding-top: 1rem;
     padding-bottom: 5rem;
@@ -530,97 +639,313 @@
     margin-top: 1rem;
   }
 
-  /* Stream tablet */
+  /* =========================
+     STREAM TABLET (BIGGER + WIDER)
+     ========================= */
+
   .stream-wrap {
-    width: min(96vw, 1200px);
-    /* keep tablet fully visible */
-    background-image: url("../media/stream-stone-tab-for-768.webp");
-    background-size: contain;
-    background-position: center top;
-    background-repeat: no-repeat;
-    /* stop masking edges */
-    border-radius: 0;
-    overflow: visible;
-    /* spacing */
-    padding: 4rem 3.5rem 5rem;
-    /* IMPORTANT: do NOT force aspect-ratio here */
-    aspect-ratio: auto;
-    min-height: unset;
-    height: auto;
+    max-width: 1900px;      /* ✅ wide tablet */
+    min-height: 1350px;     /* ✅ taller tablet */
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
   }
 
-  /* Keep content inside by scrolling schedule */
+  .stream-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;    /* ✅ no crop */
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Keep header/status/note STATIC (no scrolling here) */
+  .stream-content {
+    position: relative;
+    z-index: 1;
+    width: min(1400px, 94%);     /* ✅ roomy content area */
+    margin: 0 auto;
+    padding: 6.2rem 4.5rem 3.5rem;
+
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* =========================
+     SCHEDULE (SHORTER + THINNER + SCROLL BODY)
+     ========================= */
+
   .schedule-card {
-    max-height: 520px;
+    padding: 0;
+    overflow: hidden;
+    transform: scale(0.90);       /* ✅ thinner schedule */
+    transform-origin: top center;
+    margin-top: 0.3rem;
+  }
+
+  /* ✅ Only rows scroll */
+  .schedule-body {
+    max-height: 520px;            /* ✅ shows ~5 days then scroll */
     overflow-y: auto;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ✅ Header row fixed */
+  .schedule-grid--head {
+    display: grid;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: rgba(34, 34, 34, 0.98);
   }
 
   /* 5-column sizing at 1024+ */
   .schedule-grid {
+    display: grid;
     grid-template-columns: 140px 120px 1fr 1.3fr 120px;
     min-width: 0;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
   }
 
+  /* Slightly smaller text + less padding so it fits better */
+  .schedule-cell {
+    padding: 0.75rem 0.85rem;     /* ✅ tighter rows */
+    font-size: 0.98rem;           /* ✅ slightly smaller */
+    border-bottom: 1px solid rgba(40, 25, 10, 0.25);
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  /* remove mobile label prefixes */
+  .schedule-grid .schedule-cell::before {
+    content: "";
+  }
+
+  /* status column tidy */
   .schedule-grid .schedule-cell:last-child {
     text-align: right;
   }
 
   .schedule-cell--head {
     background-color: rgb(34, 34, 34);
-    z-index: 10px;
+    z-index: 10;
+    font-size: 0.98rem;
+  }
+
+  /* Pills slightly smaller so they don't crowd */
+  .sched-pill {
+    font-size: 0.85rem;
+    padding: 0.32rem 0.6rem;
+  }
+
+  .stream-status,
+  .schedule-note {
+    transform: scale(0.90);             /* match schedule scale */
+    transform-origin: top center;
+  }
+
+    .stream-intro {
+    display: inline-block;            /* background fits content */
+    margin-left: 2.5rem;            /* nudge right */
+    margin-top: 0.4rem;
+    padding: 0.45rem 0.75rem;          /* tight background */
+    max-width: 85%;                    /* prevent overly long lines */
+    color: #e2d4b8;
+    background: rgba(85, 84, 84, 0.55);
+    border-radius: 10px;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);
+  }
+
+  .stream-title {
+    margin-left: 2.5rem;
   }
 }
 
+
 /* =====================================================
-   MEDIA QUERY — 1440px and up
+   MEDIA QUERY — 1440px and up (ONLY: make stone tablet wider)
    ===================================================== */
 @media (min-width: 1440px) {
 
-  .home-hero__img { max-height: 360px; }
-
-  .about-us {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-size: 100% auto;
-    min-height: calc(100vw / 1.4);
-  }
-
-  .about-us-content {
-    max-width: 1400px;
-    margin: 0 auto;
+  /* ------------------------------
+     ABOUT US (keep your current setup)
+  -------------------------------- */
+  .about-us{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 26px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 4rem 3rem;
+    min-height: 720px;
+    overflow: hidden;
+    margin-top: -50px;
+    margin-left: 10px;
   }
 
-  .stream-wrap {
-    width: min(92vw, 1280px);
+  .about-us-bg{
+    width: 62%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left center;
+  }
 
-    background-image: url("../media/stream-stone-tab-for-1440.webp");
-    background-size: contain;          /* NO CROP */
-    background-repeat: no-repeat;
-    background-position: center top;
+  .about-us-content{
+    position: absolute;
+    left: 0;
+    right: 38%;
+    margin: 0 auto;
+    max-width: 820px;
+    padding: 3rem 3.5rem;
+    font-size: 1.15rem;
+  }
 
-    border-radius: 0;
+  /* =========================
+     STREAM TABLET (BIGGER + WIDER)
+     ========================= */
+
+  .stream-wrap{
+    width: 100%;
+    max-width: 3000px;
+    min-height: 1450px;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+  }
+
+  /* ✅ ONLY CHANGE: widen the stone image itself */
+  .stream-bg{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+
+    /* makes the tablet visually wider without touching the content */
+    transform: scaleX(1.25);       /* try 1.15–1.35 */
+    transform-origin: center;
+  }
+
+  /* Keep header/status/note STATIC */
+  .stream-content{
+    position: relative;
+    z-index: 1;
+    width: min(1500px, 94%);
+    margin: 0 auto;
+    padding: 6.6rem 5rem 3.75rem;
+    max-height: none;
     overflow: visible;
-
-    padding: 4.5rem 4rem 8.5rem;
   }
 
-  .schedule-card {
-    max-height: 520px;   /* key change */
+  /* Intro: nudge right + background fits content */
+  .stream-intro{
+    display: inline-block;
+    margin-left: 3.5rem;
+    margin-top: 0.4rem;
+    padding: 0.45rem 0.75rem;
+    max-width: 85%;
+    color: #e2d4b8;
+    background: rgba(85, 84, 84, 0.55);
+    border-radius: 10px;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);
+  }
+
+  .stream-title {
+    margin-left: 4.5rem;
+  }
+
+  .stream-status,
+  .schedule-note{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    transform: scale(0.90);
+    transform-origin: top center;
+  }
+ 
+
+  /* =========================
+     SCHEDULE (SHORTER + THINNER + SCROLL BODY)
+     ========================= */
+
+  .schedule-card{
+    padding: 0;
+    overflow: hidden;
+    transform: scale(0.85);
+    transform-origin: top center;
+    margin-top: 0.3rem;
+  }
+
+  .schedule-body{
+    max-height: 540px;
     overflow-y: auto;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .schedule-grid {
-    grid-template-columns: 160px 130px 1fr 1.4fr 130px;
+  .schedule-grid--head{
+    display: grid;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: rgba(34, 34, 34, 0.98);
+  }
+
+  .schedule-grid{
+    display: grid;
+    grid-template-columns: 160px 140px 1fr 1.35fr 140px;
+    min-width: 0;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .schedule-cell{
+    padding: 0.7rem 0.85rem;
+    font-size: 1.25rem;
+    border-bottom: 1px solid rgba(40, 25, 10, 0.25);
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .schedule-grid .schedule-cell::before{
+    content: "";
+  }
+
+  .schedule-grid .schedule-cell:last-child{
+    text-align: right;
+  }
+
+  .schedule-cell--head{
+    background-color: rgb(34, 34, 34);
+    z-index: 10;
+    font-size: 1.5rem;
+  }
+
+  .sched-pill{
+    font-size: 0.82rem;
+    padding: 0.3rem 0.55rem;
   }
 }
+
+
 
 
 
@@ -632,23 +957,8 @@
   /* =========================
      BIG TABLET (NO SMALL CAP)
      ========================= */
-  .stream-wrap{
-    /* IMPORTANT: kill the base cap */
-    max-width: none;
-    /* make it fill the screen more */
-    width: min(96vw, 4200px);
-    margin: 0 auto;
-    background-image: url("../media/stream-stone-tab-4k.webp");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center top;
-    border-radius: 0;
-    overflow: visible;
-    /* more internal space so content sits nicely */
-    padding: 6.5rem 6rem 12.5rem;
-    /* don’t force weird shrinking */
-    height: auto;
-    min-height: 0;
+  .stream-section {
+    margin-top: 120px;
   }
 
   /* Keep content centred on the tablet */
