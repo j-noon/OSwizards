@@ -931,6 +931,13 @@ p {
     --profile-nudge-y: -58px;  /* tweak this number to taste */
   }
 
+  .footer-social {
+    flex-direction: row;     /* 👈 inline */
+    align-items: center;
+    gap: 14px;   
+    padding: 4px 0;
+  }
+
 }
 /* =========================================================
    ULTRAWIDE (>= 1024px)
@@ -975,5 +982,150 @@ p {
   /* Keep header row tidy */
   .header-row {
     padding-right: 0;
+  }
+}
+
+/* =========================================================
+   ULTRAWIDE (>= 2560px) — HEADER SCALE UP
+   Makes header + nav + profile button feel correct on 2K
+   ========================================================= */
+@media (min-width: 2560px) {
+
+  /* wider header container */
+  .site-header .container {
+    width: min(2000px, 94%);
+  }
+
+  /* give the header a bit more height */
+  .site-header {
+    padding: 18px 0 22px;
+  }
+
+  /* bigger brand/title */
+  .brand {
+    font-size: 74px;     /* was 30 */
+    letter-spacing: 0.8px;
+  }
+
+  /* bigger logo */
+  .site-logo {
+    height: 150px;       /* was 72 */
+  }
+
+  /* give the row more room */
+  .header-row {
+    grid-template-columns: 180px 1fr 180px; /* matches larger buttons */
+    gap: 16px;
+    padding: 0 14px;
+  }
+
+  /* =========================
+     NAV SCROLL BUTTON (bigger)
+     ========================= */
+  .nav-toggle.scroll-btn {
+    width: 290px;        /* was 130 */
+    height: 180px;        /* was 52 */
+    background-size: 92%;
+  }
+
+  /* optional: stronger hover on big screens */
+  .nav-toggle.scroll-btn:hover,
+  .nav-toggle.scroll-btn:focus-visible {
+    transform: translateY(-4px) scale(1.06);
+  }
+
+  /* dropdown panel scales too (so text doesn’t look tiny) */
+  .nav-scroll {
+    padding: 64px 26px 52px;   /* ↑ top | → sides | ↓ bottom */
+    min-width: 280px;     /* parchment width */
+    max-width: 340px;
+    transform: scaleY(0.92);
+    top: calc(100% - 190px);
+    left: 50px;
+  }
+
+  .scroll-link {
+    font-size: 40px;     /* was 18 */
+    margin: 6px 0; 
+    padding-left: 28px;
+    line-height: 1.15;
+  }
+
+  /* lightning grows with the menu */
+  .lightning {
+    width: 260px;
+    height: 115px;
+  }
+
+  /* =========================
+     PROFILE BUTTON (bigger)
+     ========================= */
+  .profile-btn--parchment {
+    width: 250px;        /* was 120 */
+    height: 100px;        /* was 30 */
+    background-size: contain;
+  }
+
+  .profile-btn__text {
+    font-size: 22px;     /* was 8 */
+    letter-spacing: 0.04em;
+  }
+
+  /* =========================
+     OPTIONAL: nudge tuning at 2K
+     (only if you need it)
+     ========================= */
+   
+  .profile-btn { 
+    --profile-nudge-x: 220px;
+    --profile-nudge-y: -100px;
+  }
+
+  .nav-wrap {
+    --nav-nudge-x: -55px;
+    --nav-nudge-y: -45px;
+  }
+  
+
+  /* ==============================
+   FOOTER SCALE — 2560px+
+   ============================== */
+  .site-footer{
+    padding: 6px 0;
+  }
+
+  /* wider footer container to match the bigger header */
+  .site-footer .container{
+    width: min(2000px, 94%);
+  }
+
+  /* more breathing room */
+  .footer-inner{
+    gap: 14px;
+    padding: 12px 0;
+  }
+
+  /* bigger copyright text */
+  .footer-text{
+    font-size: 2.2rem;
+  }
+
+  /* bigger links on right */
+  .footer-link{
+    font-size: 2.15rem;
+    padding: 2px 0;
+  }
+
+  /* make the fire effect scale up too */
+  .fire-spell{
+    width: 260px;     /* was 180 */
+    height: 90px;     /* was 64 */
+    bottom: 6px;
+    transform: translateX(-50%) scaleX(0.6);
+  }
+
+  /* IMPORTANT: give page more room for the now-taller fixed footer */
+  .site-main{
+    padding-bottom: 130px;  /* was 90px */
   }
 }
